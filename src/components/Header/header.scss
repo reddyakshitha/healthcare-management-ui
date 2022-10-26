@@ -1,0 +1,52 @@
+.covid-header {
+  background: #498743;
+  padding: 20px;
+  color: #FFF;
+}
+.covid-header-top {
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 12px;
+  justify-content: space-between;
+}
+.covid-info {
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 12px;
+}
+
+.covid-header-bottom {
+  font-size: 14px;
+  padding: 10px;
+}
+
+.healthcare-header {
+  a {
+    text-decoration: none;
+    background-color: transparent;
+    color: #07234B;
+  }
+}
+
+.healthcare-header, .healthcare-searchbar {
+  padding: 20px 8vw 20px 8vw;
+  display: flex;
+  align-items: center;
+  font-size: 50px;
+  font-weight: bolder;
+  color: #07234B;
+  justify-content: space-between;
+  background-color: #DCE9FD;
+}
+.healthcare-logo {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.healthcare-logon {
+  font-size: 18px;
+}

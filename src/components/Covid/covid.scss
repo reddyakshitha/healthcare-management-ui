@@ -1,0 +1,30 @@
+.covid-doc-pic {
+  background: url('../../common/images/docPic.jpeg') no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 100vw;
+  height: 50vw;
+}
+
+.covid-header-bottom {
+  a {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+    border-bottom: 1px solid #fff;
+  }
+}
+
+.covid-page-body {
+  display: flex;
+  justify-content: center;
+  color: #717171;
+  padding: 50px;
+  flex-direction: column;
+  text-align: center;
+}
+
+.covid-cdc {
+  color: #000;
+  font-size: 20px;
+}

@@ -1,0 +1,82 @@
+.healthcare-signin, .healthcare-register {
+  display: flex;
+  justify-content: center;
+  margin: 10%;
+  position: relative;
+  top: 20vh;
+}
+.healthcare-register {
+  top: 5vh;
+}
+
+.healthcare-signin-container {
+  padding: 10%;
+}
+.healthcare-signin {
+  display: flex;
+  justify-content: center;
+  margin: 2%;
+}
+
+.healthcare-signin-container {
+  padding: 2%;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  min-width: 25vw;
+  min-height: 25vh;
+  box-shadow: 0 0 10px grey;
+}
+.healthcare-signin-fname,
+.healthcare-signin-lname,
+.healthcare-signin-userId,
+.healthcare-signin-password,
+.healthcare-signin-login,
+.healthcare-signup {
+  display: flex;
+  flex-direction: column;
+  min-height: 7vh;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.healthcare-signin-login,
+.healthcare-signup {
+  justify-content: center;
+}
+
+.or-separator, .noAccount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
+
+.or-separator::after, .or-separator::before {
+  content: '';
+  display: block;
+  background: grey;
+  width: 30%;
+  height: 1px;
+  margin: 0 10px;
+}
+.healthcare-button-signin, .healthcare-button-signup {
+  height: 50px;
+  border-radius: 50px;
+  background: #07234B;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+}
+
+input {
+  border: none;
+  border-bottom: 2px solid #000;
+  height: 50px;
+  font-size: 25px;
+}
+input:focus {
+  outline: none;
+}

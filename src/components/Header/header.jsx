@@ -5,10 +5,10 @@ import Diversity2Icon from '@mui/icons-material/Diversity2';
 
 import './header.scss';
 
-const Header = () => {
+const Header = props => {
   const header = () => {
     return (
-      <div className='healthcare-header'>
+      <div className={`healthcare-header ${props.loginPage && 'healtchcare-login'}`}>
         <Link to="/">
         <div
           className='healthcare-logo'
@@ -19,9 +19,11 @@ const Header = () => {
           HMS
         </div>
         </Link>
-        <div className='healthcare-logon'>
-          Log in
-        </div>
+        {!props.loginPage ? <Link to="/login">
+          <div className='healthcare-logon'>
+            Log in
+          </div>
+        </Link> : null}
       </div>
     )
   }
@@ -31,5 +33,14 @@ const Header = () => {
     </>
   )
 }
+Header.propTypes = {
+  loginPage: PropTypes.bool
+};
+
+
+Header.defaultProps = {
+  loginPage: false
+};
+
 
 export default Header;

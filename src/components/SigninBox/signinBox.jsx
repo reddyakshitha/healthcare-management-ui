@@ -24,7 +24,7 @@ const SigninBox = () => {
             <input className='elementPadding' type="password" id="pass" name="password" autoComplete='off' required/>
           </div>
           <div className="healthcare-signin-login">
-            <Link className='healthcare-button-signin' to='/patientHome'>
+            <Link className='healthcare-button-signin' to='/patient-home'>
             <button className='healthcare-button-signin'>
               Log In
             </button>

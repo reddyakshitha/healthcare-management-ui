@@ -19,11 +19,14 @@ const Header = props => {
           HMS
         </div>
         </Link>
-        {!props.loginPage ? <Link to="/login">
+        {props.profilePage ?
+        (<div className='healthcare-logon'>
+        Profile
+        </div>) : !props.loginPage ? (<Link to="/login">
           <div className='healthcare-logon'>
             Log in
           </div>
-        </Link> : null}
+        </Link>) : null}
       </div>
     )
   }
@@ -34,12 +37,14 @@ const Header = props => {
   )
 }
 Header.propTypes = {
-  loginPage: PropTypes.bool
+  loginPage: PropTypes.bool,
+  profilePage: PropTypes.bool
 };
 
 
 Header.defaultProps = {
-  loginPage: false
+  loginPage: false,
+  profilePage: false
 };
 
 

@@ -21,7 +21,7 @@ const Header = props => {
         </Link>
         {props.profilePage ?
         (<div className='healthcare-logon'>
-        Profile
+        Sign Out
         </div>) : !props.loginPage ? (<Link to="/login">
           <div className='healthcare-logon'>
             Log in

@@ -5,7 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import MainPage from './components/Main-Page/mainPage';
-import LoginPage from './components/Login-Page/loginPage';
+import LoginPage from './components/Login-Page/container';
 import CovidPage from './components/Covid/covidPage';
 import PatientHome from './components/PatientHome/patientHome';
 import PatientProfile from './components/PatientProfile/patientProfile';
@@ -13,6 +13,7 @@ import PatientProfile from './components/PatientProfile/patientProfile';
 import './App.css';
 
 function App() {
+  console.log(process.env.NODE_ENV);
   return (
     <Router>
       <Routes>

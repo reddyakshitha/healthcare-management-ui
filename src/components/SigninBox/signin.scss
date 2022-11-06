@@ -80,3 +80,20 @@ input {
 input:focus {
   outline: none;
 }
+
+.healthcare-signup-errors {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: red;
+  font-weight: bold;
+  max-width: 25vw;
+}
+.healthcare-signup-registered {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: rgb(18, 248, 6);
+  font-weight: bold;
+  max-width: 25vw;
+}

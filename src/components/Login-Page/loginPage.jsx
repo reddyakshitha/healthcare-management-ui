@@ -12,6 +12,8 @@ const LoginPage = props => {
         errors={props.errors}
         registrationSuccess={props.registrationSuccess}
         signUpPage={props.signUpPage}
+        loginUsers={props.loginUsers}
+        isLoggedIn={props.isLoggedIn}
         />
     </div>
   );
@@ -19,6 +21,8 @@ const LoginPage = props => {
 
 LoginPage.propTypes = {
   errors: PropTypes.array,
+  loginUsers: PropTypes.func,
+  isLoggedIn: PropTypes.bool,
   registerUsers: PropTypes.func,
   registrationSuccess: PropTypes.bool,
   signUpPage: PropTypes.func

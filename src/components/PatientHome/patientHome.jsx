@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Header from '../Header/header';
 import Search from '../Search/search';
 import { patientConfig } from '../../config/patientConfig';
@@ -8,12 +9,26 @@ import { patientConfig } from '../../config/patientConfig';
 
 import './patientHome.scss';
 
-const PatientHome = () => {
+const PatientHome = props => {
+  const {
+    errors,
+    isLoggedIn,
+    loadLoggedinUser,
+    profile
+  } = props;
+
+  useLayoutEffect(() => {
+    const token = localStorage.getItem('token');
+    loadLoggedinUser(token);
+  }, [!isLoggedIn]);
+
   const welcomeText = () => {
+    const firstName = _.get(profile, 'user.firstName', '');
+    const lastName = _.get(profile, 'user.lastName', '');
     return (
         <div className='patient-section-container'>
           <h1 className='patient-section-container-text'>
-            Welcome First Name Last Name.
+            {`Welcome ${firstName}, ${lastName}`}.
           </h1>
         </div>
     );

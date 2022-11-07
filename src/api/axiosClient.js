@@ -11,5 +11,34 @@ class AxiosClient {
     return axios.post(getUrl(url), body, config);
   }
 
+  loginUsers(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
+
+  loggedInUsers(url, token) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-auth-token': token
+      }
+    }
+    return axios.get(getUrl(url), config);
+  }
+
+  getProfile(url, token) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-auth-token': token
+      }
+    }
+    return axios.get(getUrl(url), config);
+  }
+
 };
 export default new AxiosClient();

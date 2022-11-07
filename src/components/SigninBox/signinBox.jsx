@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import './signin.scss';
 
 const SigninBox = props => {
@@ -7,7 +8,9 @@ const SigninBox = props => {
     registerUsers,
     errors,
     registrationSuccess,
-    signUpPage
+    signUpPage,
+    loginUsers,
+    isLoggedIn
   } = props;
 
   const [signUp, setSignup] = useState(false);
@@ -34,6 +37,14 @@ const SigninBox = props => {
     if (password !== '') setPassword('');
   }
 
+  const handleLoginClick = () => {
+    const payload = {
+      email: signinEmail,
+      password: signinPassword
+    };
+    loginUsers(payload);
+  }
+
   const handleRegister = () => {
     const payload = {
       firstName: fname,
@@ -46,9 +57,9 @@ const SigninBox = props => {
 
   const errorsMap = () => {
     if (errors.length > 0) {
-      const errContainer = errors.map(item => {
+      const errContainer = errors.map((item, i) => {
         return (
-          <div className='error'>
+          <div className='error' key={i}>
             {item.msg}
           </div>
         );
@@ -62,19 +73,42 @@ const SigninBox = props => {
       <div className="healthcare-signin">
         <div className="healthcare-signin-container">
           <div className="healthcare-signin-userId">
-            <label className='elementPadding' htmlFor="username">EMAIL</label>
-            <input className='elementPadding' type="text" id="username" name="username" required/>
+            <label className='elementPadding' htmlFor="login-email">EMAIL</label>
+            <input
+              className='elementPadding'
+              type="text"
+              id="login-email"
+              name="login-email"
+              required
+              onChange={e => setSigninEmail(e.target.value)}
+              value={signinEmail}
+            />
           </div>
           <div className="healthcare-signin-password">
-            <label className='elementPadding' htmlFor="password">PASSWORD</label>
-            <input className='elementPadding' type="password" id="pass" name="password" autoComplete='off' required/>
+            <label className='elementPadding' htmlFor="login-password">PASSWORD</label>
+            <input
+              className='elementPadding'
+              type="password"
+              id="login-pass"
+              name="login-password"
+              autoComplete='off'
+              required
+              onChange={e => setSigninPassword(e.target.value)}
+              value={signinPassword}
+            />
           </div>
           <div className="healthcare-signin-login">
-            <Link className='healthcare-button-signin' to='/patient-home'>
-            <button className='healthcare-button-signin'>
+            {/* <Link className='healthcare-button-signin' to='/patient-home'> */}
+            <button
+              className='healthcare-button-signin'
+              onClick={handleLoginClick}
+            >
               Log In
             </button>
-            </Link>
+            {/* </Link> */}
+          </div>
+          <div className="healthcare-signup-errors">
+            {errorsMap()}
           </div>
           <div className='or-separator'>OR</div>
           <div className='noAccount'>No account yet ?</div>
@@ -190,6 +224,7 @@ const SigninBox = props => {
 
   return (
     <>
+      {isLoggedIn && <Navigate replace to="/patient-home"/>}
       {registrationSuccess && signUp ? signup(true) :
       !registrationSuccess && signUp ? signup(false) :
       signin()}

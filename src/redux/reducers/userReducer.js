@@ -2,7 +2,9 @@ import {initialState} from './initialState';
 import {
   REGISTER_USER_ERROR,
   STORE_TOKEN,
-  RESET_SIGN_UP
+  RESET_SIGN_UP,
+  STORE_PROFILE,
+  LOGIN_ERROR
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
@@ -23,6 +25,19 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         registrationSuccess: false
+      }
+    case STORE_PROFILE:
+      return {
+        ...state,
+        isLoggedIn: true,
+        profile: action.payload,
+        errors: []
+      }
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        isLoggedIn: false,
+        errors: action.payload
       }
     default:
       return state;

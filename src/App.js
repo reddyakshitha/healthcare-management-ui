@@ -7,12 +7,13 @@ import {
 import MainPage from './components/Main-Page/mainPage';
 import LoginPage from './components/Login-Page/container';
 import CovidPage from './components/Covid/covidPage';
-import PatientHome from './components/PatientHome/patientHome';
+import PatientHome from './components/PatientHome/container';
 import PatientProfile from './components/PatientProfile/patientProfile';
 
 import './App.css';
 
 function App() {
+  // localStorage.removeItem('token');
   console.log(process.env.NODE_ENV);
   return (
     <Router>

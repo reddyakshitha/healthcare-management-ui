@@ -40,5 +40,16 @@ class AxiosClient {
     return axios.get(getUrl(url), config);
   }
 
+  updateProfile(url, token, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-auth-token': token
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+
+  }
+
 };
 export default new AxiosClient();

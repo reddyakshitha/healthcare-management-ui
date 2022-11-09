@@ -5,6 +5,8 @@ import _ from 'lodash';
 import Header from '../Header/header';
 import Search from '../Search/search';
 import { patientConfig } from '../../config/patientConfig';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PersonIcon from '@mui/icons-material/Person';
 
 
 import './patientHome.scss';
@@ -14,7 +16,8 @@ const PatientHome = props => {
     errors,
     isLoggedIn,
     loadLoggedinUser,
-    profile
+    profile,
+    signOut
   } = props;
 
   useLayoutEffect(() => {
@@ -37,6 +40,9 @@ const PatientHome = props => {
     return (
         <div className='patient-section-container'>
           <div className='patient-upcoming-appointments'>
+            <CalendarMonthIcon
+              sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
+            />
             <h4 className='patient-section-container-text'>
               Upcoming appointments
             </h4>
@@ -52,6 +58,9 @@ const PatientHome = props => {
           <Link className='patient-section-container' to='/patient-home/profile'>
             <div className='patient-section-container'>
               <div className='patient-upcoming-appointments'>
+                <PersonIcon
+                  sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
+                />
                 <h4 className='patient-section-container-text'>
                   Profile
                 </h4>
@@ -62,7 +71,10 @@ const PatientHome = props => {
   }
   return (
     <>
-      <Header profilePage/>
+      <Header
+        profilePage
+        signOut={signOut}
+      />
       <Search />
       <div className='patient-section'>
         {welcomeText()}

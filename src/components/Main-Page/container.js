@@ -1,10 +1,5 @@
 import {connect} from 'react-redux';
-import LoginPage from './loginPage';
-import {
-  registerUsers,
-  signUpPage,
-  loginUsers
-} from '../../redux/actions/userActions';
+import MainPage from './mainPage';
 
 const mapStateToProps = state => {
   return {
@@ -16,9 +11,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  registerUsers,
-  signUpPage,
-  loginUsers
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

@@ -1,24 +1,21 @@
 import {connect} from 'react-redux';
-import LoginPage from './loginPage';
 import {
-  registerUsers,
-  signUpPage,
-  loginUsers
+  loadLoggedinUser,
+  updateInfo
 } from '../../redux/actions/userActions';
+import PatientProfile from './patientProfile';
 
 const mapStateToProps = state => {
   return {
     errors: state.user.errors,
-    registrationSuccess: state.user.registrationSuccess,
     isLoggedIn: state.user.isLoggedIn,
     profile: state.user.profile
   };
 };
 
 const mapDispatchToProps = {
-  registerUsers,
-  signUpPage,
-  loginUsers
+  loadLoggedinUser,
+  updateInfo
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(PatientProfile);

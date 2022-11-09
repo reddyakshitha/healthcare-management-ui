@@ -4,11 +4,14 @@ import Search from '../Search/search';
 import CovidBar from '../Covid/covidBar';
 import HomePageBody from '../Home-Body/homeMidSec';
 
-function MainPage() {
+const MainPage = props => {
   return (
     <div className="healthcare-app">
       <CovidBar/>
-      <Header/>
+      <Header
+        isLoggedIn={props.isLoggedIn}
+        profile={props.profile}
+      />
       <Search/>
       <HomePageBody/>
     </div>

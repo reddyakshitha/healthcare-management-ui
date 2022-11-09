@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import {
-  loadLoggedinUser
+  loadLoggedinUser,
+  signOut
 } from '../../redux/actions/userActions';
 import PatientHome from './patientHome';
 
@@ -13,7 +14,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  loadLoggedinUser
+  loadLoggedinUser,
+  signOut
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatientHome);

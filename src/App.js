@@ -4,11 +4,11 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import MainPage from './components/Main-Page/mainPage';
+import MainPage from './components/Main-Page/container';
 import LoginPage from './components/Login-Page/container';
 import CovidPage from './components/Covid/covidPage';
 import PatientHome from './components/PatientHome/container';
-import PatientProfile from './components/PatientProfile/patientProfile';
+import PatientProfile from './components/PatientProfile/container';
 
 import './App.css';
 

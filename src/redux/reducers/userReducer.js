@@ -4,11 +4,16 @@ import {
   STORE_TOKEN,
   RESET_SIGN_UP,
   STORE_PROFILE,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  SIGNOUT_USER
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SIGNOUT_USER:
+      return {
+        initialState
+      };
     case REGISTER_USER_ERROR:
       return {
         ...state,

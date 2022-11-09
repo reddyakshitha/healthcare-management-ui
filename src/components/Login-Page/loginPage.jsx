@@ -6,7 +6,11 @@ import SigninBox from '../SigninBox/signinBox';
 const LoginPage = props => {
   return (
     <div className="healthcare-app">
-      <Header loginPage/>
+      <Header
+        loginPage
+        isLoggedIn={props.isLoggedIn}
+        profile={props.profile}
+      />
       <SigninBox
         registerUsers={props.registerUsers}
         errors={props.errors}

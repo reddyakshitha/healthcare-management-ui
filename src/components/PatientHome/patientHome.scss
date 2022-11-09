@@ -44,10 +44,12 @@
   box-shadow: 0 0 10px grey;
   border-radius: 15px;
   padding: 10px;
-  max-width: 20vw;
-  min-height: 20vh;
-  min-width: 20vw;
+  max-width: 25vw;
+  min-height: 35vh;
+  min-width: 25vw;
   height: 20vh;
+  align-items: center;
+  text-align: center;
 }
 
 .patient-section, .patient-section-tabs {

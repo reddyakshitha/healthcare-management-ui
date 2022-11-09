@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import _ from 'lodash';
 import { Navigate } from "react-router-dom";
 import './signin.scss';
 
@@ -108,7 +109,7 @@ const SigninBox = props => {
             {/* </Link> */}
           </div>
           <div className="healthcare-signup-errors">
-            {errorsMap()}
+            {_.get(props, 'errors', []).length > 0 && errorsMap()}
           </div>
           <div className='or-separator'>OR</div>
           <div className='noAccount'>No account yet ?</div>
@@ -195,7 +196,7 @@ const SigninBox = props => {
                 />
               </div>
               <div className="healthcare-signup-errors">
-                {errorsMap()}
+                {_.get(props, 'errors', []).length > 0 && errorsMap()}
               </div>
               <div className="healthcare-signin-login">
                 <button

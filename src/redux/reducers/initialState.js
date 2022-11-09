@@ -4,5 +4,6 @@ export const initialState = {
   profile: {
   },
   errors: [],
-  registrationSuccess: false
+  registrationSuccess: false,
+  registrationMsg: ''
 };

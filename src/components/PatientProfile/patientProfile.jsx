@@ -6,7 +6,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import Header from '../Header/header';
 import Search from '../Search/search';
-import { patientConfig } from '../../config/patientConfig';
 import './patientProfile.scss';
 
 const PatientProfile = props => {
@@ -14,7 +13,8 @@ const PatientProfile = props => {
     profile,
     isLoggedIn,
     loadLoggedinUser,
-    updateInfo
+    updateInfo,
+    signOut
   } = props;
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -162,7 +162,10 @@ const PatientProfile = props => {
   
   return (
     <>
-      <Header profilePage/>
+      <Header
+        profilePage
+        signOut={signOut}
+        />
       <Search />
       <div className='patient-profile-section'>
         {personalInformation()}

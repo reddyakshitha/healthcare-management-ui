@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Header from '../Header/header';
 import SigninBox from '../SigninBox/signinBox';
 
@@ -18,6 +19,9 @@ const LoginPage = props => {
         signUpPage={props.signUpPage}
         loginUsers={props.loginUsers}
         isLoggedIn={props.isLoggedIn}
+        isAdmin={_.get(props, 'isAdmin', false)}
+        isPatient={_.get(props, 'isPatient', false)}
+        isDoctor={_.get(props, 'isDoctor', false)}
         />
     </div>
   );

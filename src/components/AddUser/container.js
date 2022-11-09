@@ -4,7 +4,7 @@ import {
   updateInfo,
   signOut
 } from '../../redux/actions/userActions';
-import PatientProfile from './patientProfile';
+import AddUser from './addUser';
 
 const mapStateToProps = state => {
   return {
@@ -20,4 +20,4 @@ const mapDispatchToProps = {
   signOut
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PatientProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(AddUser);

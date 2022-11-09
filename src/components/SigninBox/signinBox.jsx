@@ -11,7 +11,9 @@ const SigninBox = props => {
     registrationSuccess,
     signUpPage,
     loginUsers,
-    isLoggedIn
+    isLoggedIn,
+    isAdmin,
+    isPatient
   } = props;
 
   const [signUp, setSignup] = useState(false);
@@ -225,7 +227,8 @@ const SigninBox = props => {
 
   return (
     <>
-      {isLoggedIn && <Navigate replace to="/patient-home"/>}
+      {isLoggedIn && isPatient && <Navigate replace to="/patient-home"/>}
+      {isLoggedIn && isAdmin && <Navigate replace to="/admin-home"/>}
       {registrationSuccess && signUp ? signup(true) :
       !registrationSuccess && signUp ? signup(false) :
       signin()}

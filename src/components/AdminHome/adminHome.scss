@@ -1,0 +1,67 @@
+.patient-section-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 2%;
+  text-decoration: none;
+}
+.patient-section-container-text {
+  font-weight: bold;
+  color: #07234B;
+  margin: 0;
+  padding: 10px 0 10px 0;
+  text-align: center;
+}
+
+.cardContainer {
+  font-weight: bold;
+  width: 25vw;
+  height: 15vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  box-shadow: 0 0 10px grey;
+  padding: 10px;
+  margin: 20px;
+}
+
+.patient-view-details {
+  display: flex;
+  justify-content: center;
+  height: 35px;
+  border-radius: 50px;
+  // background: #07234B;
+  background: #498743;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  align-items: center;
+  text-decoration: none;
+}
+
+.patient-upcoming-appointments {
+  box-shadow: 0 0 10px grey;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 25vw;
+  min-height: 35vh;
+  min-width: 25vw;
+  height: 20vh;
+  align-items: center;
+  text-align: center;
+}
+
+.patient-section, .patient-section-tabs {
+  display: flex;
+}
+.patient-section {
+  flex-direction: column;
+}
+.patient-section-tabs {
+  justify-content: space-evenly;
+}
+
+.patient-upcoming-appointments-list {
+  text-align: center;
+}

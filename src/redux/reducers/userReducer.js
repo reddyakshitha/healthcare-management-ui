@@ -5,11 +5,17 @@ import {
   RESET_SIGN_UP,
   STORE_PROFILE,
   LOGIN_ERROR,
-  SIGNOUT_USER
+  SIGNOUT_USER,
+  DOCTOR_REGISTER_SUCCESS
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case DOCTOR_REGISTER_SUCCESS:
+      return {
+        ...state,
+        registrationMsg: action.payload
+      }
     case SIGNOUT_USER:
       return {
         initialState

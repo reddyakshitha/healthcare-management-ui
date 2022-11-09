@@ -3,7 +3,7 @@ export const getUrl = path => {
   if (process.env.NODE_ENV === 'development') {
     val = 'http://localhost:5000';
   } else {
-    val = 'https://healthcaremanagement.netlify.app';
+    val = 'https://healthcaremanagement.adaptable.app';
   }
   return val + path;
 };

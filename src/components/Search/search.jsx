@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import Select from 'react-select'
@@ -6,7 +6,16 @@ import Select from 'react-select'
 
 import './search.scss';
 
-const Search = () => {
+const Search = props => {
+
+  const {
+    getAllDoctors,
+    loading
+  } = props;
+  useEffect(() => {
+    getAllDoctors()
+  }, []);
+
   const options = [
     { value: 'cardiologist', label: 'Cardiologist', id: 'speciality-cardiologist'},
     { value: 'dentist', label: 'Dentist', id: 'speciality-dentist'},
@@ -37,6 +46,10 @@ const Search = () => {
       return { ...provided, opacity, transition };
     }
   }
+
+  const handleOnchange = (e) => {
+    console.log('search onchange called', e);
+  }
   
   const header = () => {
     return (
@@ -46,11 +59,19 @@ const Search = () => {
             styles={customStyles}
             options={options}
             placeholder='Speciality...'
+            onChange={(e) => handleOnchange(e)}
           />
         </div>
       </div>
     )
   }
+
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    );
+  }
+
   return (
     <>
       {header()}

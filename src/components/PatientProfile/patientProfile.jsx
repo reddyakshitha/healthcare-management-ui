@@ -1,5 +1,7 @@
 /*eslint-disable  no-unused-expressions */
 import React, {useLayoutEffect, useEffect, useState} from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {Link} from 'react-router-dom';
 import _ from 'lodash';
 import moment from 'moment';
@@ -14,7 +16,11 @@ const PatientProfile = props => {
     isLoggedIn,
     loadLoggedinUser,
     updateInfo,
-    signOut
+    signOut,
+    profileUpdateSuccess,
+    updateInfoSuccessfull,
+    loading,
+    getAllDoctors
   } = props;
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,7 +34,9 @@ const PatientProfile = props => {
     email: '',
     dob: '',
     gender: '',
-    medHis: ''
+    medHis: '',
+    updatePersInfo: false,
+    updateMedHis: false
   });
   const {
     _id,
@@ -37,11 +45,16 @@ const PatientProfile = props => {
     email,
     dob,
     gender,
-    medHis
+    medHis,
+    updatePersInfo,
+    updateMedHis
   } = personalData;
 
   const onChange = e => {
-    setPersonalData({...personalData, [e.target.name]: e.target.value});
+    if (profileUpdateSuccess) {
+      updateInfoSuccessfull(false);
+    }
+    setPersonalData({...personalData, [e.target.name]: e.target.value, updatePersInfo: false, updateMedHis: false});
   }
   const update = section => {
     let payload = {};
@@ -52,9 +65,11 @@ const PatientProfile = props => {
       payload.dob = dob !== '' ? dob : moment(profile.dob).utc().format('YYYY-DD-MM'),
       payload.gender = gender !== '' ? gender : _.get(profile, 'gender', '')
       updateInfo(payload, token);
+    setPersonalData({...personalData, updatePersInfo: true});
     } else if (section === 'medHis') {
       payload.medicalHistory = medHis !== '' ? medHis : _.get(profile, 'medicalHistory', '')
       updateInfo(payload, token);
+      setPersonalData({...personalData, updateMedHis: true});
     }
   }
   const patientDetails = () => {
@@ -104,6 +119,7 @@ const PatientProfile = props => {
         <div className='patient-id-container'>
         <label htmlFor="gender"> Gender</label>
           <select name="gender" value={gender !== '' ? gender : _.get(profile, 'gender', '')} onChange={(e) => onChange(e)}>
+            <option value="" disabled selected>Select</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">other</option>
@@ -115,6 +131,11 @@ const PatientProfile = props => {
             Update
           </button>
         </div>
+        {profileUpdateSuccess && updatePersInfo && <div className='patient-id-container'>
+            <div className="healthcare-signup-registered">
+            Patient's personal information updated sucessfully.
+          </div>
+        </div>}
       </>
     )
   }
@@ -146,6 +167,15 @@ const PatientProfile = props => {
             >
               Update
             </button>
+            {profileUpdateSuccess && updateMedHis && 
+                toast(`Patient's medical history updated sucessfully.`, {
+                  toastId: 'medHisSuccess',
+                  onClose: () => {
+                    if (profileUpdateSuccess) {
+                    setPersonalData({...personalData, updateMedHis: false});
+                    }
+                  }, autoClose: 5000
+                })}
           </div>
         </div>
     );
@@ -166,12 +196,17 @@ const PatientProfile = props => {
         profilePage
         signOut={signOut}
         />
-      <Search />
-      <div className='patient-profile-section'>
+      <Search
+        getAllDoctors={getAllDoctors}
+        loading={loading}
+      />
+      {loading && <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>}
+      {!loading && <div className='patient-profile-section'>
         {personalInformation()}
         {medicalHistory()}
         {prescriptions()}
-      </div>
+        <ToastContainer limit={1} autoClose={5000}/>
+      </div>}
     </>
   )
 }

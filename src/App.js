@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,7 +14,7 @@ import AddUser from './components/AddUser/container';
 
 import './App.css';
 
-function App() {
+const App = props => {
   // localStorage.removeItem('token');
   console.log(process.env.NODE_ENV);
   return (

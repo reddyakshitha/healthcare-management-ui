@@ -22,6 +22,8 @@ const LoginPage = props => {
         isAdmin={_.get(props, 'isAdmin', false)}
         isPatient={_.get(props, 'isPatient', false)}
         isDoctor={_.get(props, 'isDoctor', false)}
+        clearErrors={props.clearErrors}
+        loading={props.loading}
         />
     </div>
   );

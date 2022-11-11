@@ -12,7 +12,10 @@ const MainPage = props => {
         isLoggedIn={props.isLoggedIn}
         profile={props.profile}
       />
-      <Search/>
+      <Search
+        getAllDoctors={props.getAllDoctors}
+        loading={props.loading}
+      />
       <HomePageBody/>
     </div>
   );

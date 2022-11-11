@@ -17,7 +17,9 @@ const PatientHome = props => {
     isLoggedIn,
     loadLoggedinUser,
     profile,
-    signOut
+    signOut,
+    loading,
+    getAllDoctors
   } = props;
 
   useLayoutEffect(() => {
@@ -75,7 +77,10 @@ const PatientHome = props => {
         profilePage
         signOut={signOut}
       />
-      <Search />
+      <Search
+        getAllDoctors={getAllDoctors}
+        loading={loading}
+      />
       <div className='patient-section'>
         {welcomeText()}
         <div className='patient-section-tabs'>

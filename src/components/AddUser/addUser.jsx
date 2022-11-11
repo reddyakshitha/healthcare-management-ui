@@ -1,6 +1,8 @@
 /*eslint-disable  no-unused-expressions */
 import React, {useLayoutEffect, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -11,11 +13,22 @@ import { Password } from '@mui/icons-material';
 
 const AddUser = props => {
   const {
+    errors,
     profile,
     isLoggedIn,
     loadLoggedinUser,
     updateInfo,
-    signOut
+    signOut,
+    adminregisterUsers,
+    adminRegisteredUserTokens,
+    registrationDoctorSuccess,
+    registrationDoctorError,
+    doctorSuccess,
+    doctorErr,
+    updateInfoSuccessfull,
+    profileUpdateSuccess,
+    loading,
+    getAllDoctors
   } = props;
 
   const [personalData, setPersonalData] = useState({
@@ -26,7 +39,8 @@ const AddUser = props => {
     gender: '',
     password: '',
     credentials: false,
-    speciality: ''
+    speciality: '',
+    education: ''
   });
   const {
     password,
@@ -36,7 +50,8 @@ const AddUser = props => {
     dob,
     gender,
     credentials,
-    speciality
+    speciality,
+    education
   } = personalData;
 
   const onChange = e => {
@@ -48,14 +63,17 @@ const AddUser = props => {
     if (section === 'info') {
       payload.dob = dob,
       payload.speciality = speciality,
-      payload.gender = gender
-      updateInfo(payload, token);
+      payload.gender = gender,
+      payload.education = education
+      updateInfo(payload, adminRegisteredUserTokens);
+      setPersonalData({...personalData, credentials: false});
     } else if (section === 'cred') {
       payload.firstName = firstName,
       payload.lastName = lastName,
       payload.email = email,
-      payload.password = password
-      updateInfo(payload, token);
+      payload.password = password,
+      payload.isDoctor = true
+      adminregisterUsers(payload);
       setPersonalData({...personalData, credentials: true});
     }
   }
@@ -63,11 +81,27 @@ const AddUser = props => {
     return (
       <>
         <div className='patient-id-container'>
-          <label className='patient-id-label'>Speciality</label>
+          <label htmlFor="speciality"> Speciality</label>
+          <select name="speciality" value={speciality} onChange={(e) => onChange(e)}>
+            <option value="" disabled selected>Select</option>
+            <option value="cardiologist">Cardiologist</option>
+            <option value="dentist">Dentist</option>
+            <option value="dermatologist">Dermatologist</option>
+            <option value="generalSurgeon">General Surgeon</option>
+            <option value="neurologist">Neurologist</option>
+            <option value="oncologist">Oncologist</option>
+            <option value="ophthalmologist">Ophthalmologist</option>
+            <option value="pediatrician">Pediatrician</option>
+            <option value="primaryCarePhysician">Primary Care Physician-PCP</option>
+            <option value="radiologist">Radiologist</option>
+          </select>
+        </div>
+        <div className='patient-id-container'>
+          <label className='patient-id-label'>Education</label>
           <input
             type="string"
-            name="speciality"
-            value={speciality}
+            name="education"
+            value={education}
             onChange={(e) => onChange(e)}
           />
         </div>
@@ -83,12 +117,14 @@ const AddUser = props => {
         <div className='patient-id-container'>
         <label htmlFor="gender"> Gender</label>
           <select name="gender" value={gender} onChange={(e) => onChange(e)}>
+            <option value="" disabled selected>Select</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">other</option>
           </select>
           <button
-            className={`${!credentials ? 'btn-disabled' : 'update-personal-info '}`}
+            className={`${!credentials || _.get(props, 'errors', []).length > 0 ? 'btn-disabled' : 'update-personal-info '}`}
+            disabled={!credentials || _.get(props, 'errors', []).length > 0}
             onClick={() => update('info')}
           >
             Add Doctor Profile
@@ -156,16 +192,46 @@ const AddUser = props => {
             Add Doctor Profile
           </h1>
           {patientDetails()}
+          {profileUpdateSuccess && 
+                toast(`Profile successfully Updated`, {
+                  toastId: 'docProfSuccess',
+                  onClose: () => {
+                    updateInfoSuccessfull(false);
+                  }, autoClose: 5000
+                })}
         </div>
     );
   }
   const doctorCredentials = () => {
+    const errorsMap = () => {
+      if (errors.length > 0) {
+        const errContainer = errors.map((item, i) => {
+          return (
+            <div className='error' key={i}>
+              {item.msg}
+            </div>
+          );
+        });
+        return errContainer
+      }
+    }
     return (
         <div className='patient-profile-section-container'>
           <h1 className='patient-personal-information'>
             Add Doctor Credentials
           </h1>
           {doctorLoginCred()}
+          {registrationDoctorSuccess && 
+                toast(`Credentials added successfully`, {
+                  toastId: 'docRegSuccess',
+                  onClose: () => {
+                    doctorSuccess(false);
+                  }, autoClose: 5000
+                })}
+          {registrationDoctorError && 
+          <div className="healthcare-signup-errors">
+            {_.get(props, 'errors', []).length > 0 && errorsMap()}
+          </div>}
         </div>
     );
 
@@ -177,7 +243,11 @@ const AddUser = props => {
         profilePage
         signOut={signOut}
         />
-      <Search />
+        <Search
+          getAllDoctors={props.getAllDoctors}
+          loading={props.loading}
+        />
+      <ToastContainer limit={1} autoClose={5000}/>
       <div className='patient-profile-section'>
         {doctorCredentials()}
         {personalInformation()}

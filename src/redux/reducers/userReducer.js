@@ -6,15 +6,48 @@ import {
   STORE_PROFILE,
   LOGIN_ERROR,
   SIGNOUT_USER,
-  DOCTOR_REGISTER_SUCCESS
+  DOCTOR_REGISTER_SUCCESS,
+  CLEAR_ERRORS,
+  LOADING,
+  UPDATE_INFO_SUCCESS,
+  ADMIN_STORE_TOKEN_OF_USERS,
+  DOCTOR_REGISTER_ERROR
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADMIN_STORE_TOKEN_OF_USERS:
+      return {
+        ...state,
+        adminRegisteredUserTokens: action.payload
+      }
+    case UPDATE_INFO_SUCCESS:
+      return {
+        ...state,
+        profileUpdateSuccess: action.payload
+      }
+    case LOADING:
+      return {
+        ...state,
+        loading: action.payload
+      }
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        errors: []
+      }
     case DOCTOR_REGISTER_SUCCESS:
       return {
         ...state,
-        registrationMsg: action.payload
+        registrationDoctorSuccess: action.payload,
+        registrationDoctorError: false,
+        errors: []
+      }
+    case DOCTOR_REGISTER_ERROR:
+      return {
+        ...state,
+        registrationDoctorSuccess: false,
+        registrationDoctorError: action.payload
       }
     case SIGNOUT_USER:
       return {

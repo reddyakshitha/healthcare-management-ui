@@ -5,5 +5,9 @@ export const initialState = {
   },
   errors: [],
   registrationSuccess: false,
-  registrationMsg: ''
+  registrationDoctorSuccess: false,
+  registrationDoctorError: false,
+  loading: false,
+  profileUpdateSuccess: false,
+  adminRegisteredUserTokens: ''
 };

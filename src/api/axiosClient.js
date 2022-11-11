@@ -51,5 +51,14 @@ class AxiosClient {
 
   }
 
+  getAllDoctors(url) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.get(getUrl(url), config);
+  }
+
 };
 export default new AxiosClient();

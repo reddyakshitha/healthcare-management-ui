@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import { Navigate } from "react-router-dom";
 import './signin.scss';
@@ -13,8 +14,12 @@ const SigninBox = props => {
     loginUsers,
     isLoggedIn,
     isAdmin,
-    isPatient
+    isPatient,
+    clearErrors,
+    loading
   } = props;
+
+  const location = useLocation();
 
   const [signUp, setSignup] = useState(false);
   const [fname, setFirstName] = useState('');
@@ -27,6 +32,7 @@ const SigninBox = props => {
   const handleSignInClick = () => {
     setSignup(!signUp);
     signUpPage();
+    clearErrors();
     if (fname !== '') setFirstName('');
     if (lname !== '') setLastName('');
     if (email !== '') setEmail('');
@@ -34,6 +40,7 @@ const SigninBox = props => {
   }
   const handleSignupClick = () => {
     setSignup(!signUp);
+    clearErrors();
     if (fname !== '') setFirstName('');
     if (lname !== '') setLastName('');
     if (email !== '') setEmail('');
@@ -103,7 +110,8 @@ const SigninBox = props => {
           <div className="healthcare-signin-login">
             {/* <Link className='healthcare-button-signin' to='/patient-home'> */}
             <button
-              className='healthcare-button-signin'
+              disabled={signinEmail === '' && signinPassword === ''}
+              className={`${signinEmail !== '' && signinPassword !== '' ? 'healthcare-button-signin' : 'btn-disabled'}`}
               onClick={handleLoginClick}
             >
               Log In
@@ -224,6 +232,12 @@ const SigninBox = props => {
       </div>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    );
+  }
 
   return (
     <>

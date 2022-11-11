@@ -4,7 +4,8 @@ import _ from 'lodash';
 import {
   registerUsers,
   signUpPage,
-  loginUsers
+  loginUsers,
+  clearErrors
 } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => {
@@ -15,14 +16,16 @@ const mapStateToProps = state => {
     profile: state.user.profile,
     isAdmin: _.get(state, 'user.profile.user.isAdmin', false),
     isPatient: _.get(state, 'user.profile.user.isPatient', false),
-    isDoctor: _.get(state, 'user.profile.user.isDoctor', false)
+    isDoctor: _.get(state, 'user.profile.user.isDoctor', false),
+    loading: state.user.loading
   };
 };
 
 const mapDispatchToProps = {
   registerUsers,
   signUpPage,
-  loginUsers
+  loginUsers,
+  clearErrors
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

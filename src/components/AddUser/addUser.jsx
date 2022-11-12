@@ -28,7 +28,8 @@ const AddUser = props => {
     updateInfoSuccessfull,
     profileUpdateSuccess,
     loading,
-    getAllDoctors
+    getAllDoctors,
+    allDoctors
   } = props;
 
   const [personalData, setPersonalData] = useState({
@@ -236,16 +237,17 @@ const AddUser = props => {
     );
 
   }
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    );
+  }
   
   return (
     <>
       <Header
         profilePage
         signOut={signOut}
-        />
-        <Search
-          getAllDoctors={props.getAllDoctors}
-          loading={props.loading}
         />
       <ToastContainer limit={1} autoClose={5000}/>
       <div className='patient-profile-section'>

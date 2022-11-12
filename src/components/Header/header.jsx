@@ -14,7 +14,7 @@ const Header = props => {
   } = props;
   const handleProfilePage = () => {
     return (
-      <Navigate replace to="/patient-home" />
+      <Navigate to="/patient-home" />
     )
   }
   const handleSignout = () => {

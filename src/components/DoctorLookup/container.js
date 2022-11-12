@@ -1,26 +1,22 @@
 import {connect} from 'react-redux';
+import DoctorLookup from './doctorLookup';
 import {
-  loadLoggedinUser,
-  signOut,
   getAllDoctors
 } from '../../redux/actions/userActions';
-import AdminHome from './adminHome';
 
 const mapStateToProps = state => {
   return {
     errors: state.user.errors,
+    registrationSuccess: state.user.registrationSuccess,
     isLoggedIn: state.user.isLoggedIn,
     profile: state.user.profile,
     loading: state.user.loading,
-    allDoctors: state.user.allDoctors,
-    user: state.user
+    allDoctors: state.user.allDoctors
   };
 };
 
 const mapDispatchToProps = {
-  loadLoggedinUser,
-  signOut,
   getAllDoctors
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminHome);
+export default connect(mapStateToProps, mapDispatchToProps)(DoctorLookup);

@@ -29,6 +29,8 @@ export const storeAllDoctors = payload => {
     let primaryCarePhysician = [];
     let radiologist = [];
 
+    let searchStructure = [];
+
     cardiologist = payload.filter(item => item.speciality === 'cardiologist');
     dentist = payload.filter(item => item.speciality === 'dentist');
     dermatologist = payload.filter(item => item.speciality === 'dermatologist');
@@ -40,7 +42,23 @@ export const storeAllDoctors = payload => {
     primaryCarePhysician = payload.filter(item => item.speciality === 'primaryCarePhysician');
     radiologist = payload.filter(item => item.speciality === 'radiologist');
 
-    console.log(cardiologist,
+    searchStructure = payload.map(item => {
+      return {
+        id: `Dr ${item.user.firstName} ${item.user.lastName}`,
+        value: `Dr ${item.user.firstName} ${item.user.lastName} - ${item.speciality}`,
+        label: `Dr ${item.user.firstName} ${item.user.lastName} - ${item.speciality}`,
+        section: 'Doctor',
+        firstName: item.user.firstName,
+        lastName: item.user.lastName,
+        email: item.user.email,
+        docId: item.user._id,
+        speciality: item.speciality,
+        education: item.education
+      }
+    });
+    return {
+      type: STORE_ALL_DOCTORS,
+      cardiologist,
       dentist,
       dermatologist,
       generalSurgeon,
@@ -49,11 +67,9 @@ export const storeAllDoctors = payload => {
       ophthalmologist,
       pediatrician,
       primaryCarePhysician,
-      radiologist);
-    return {
-      type: STORE_ALL_DOCTORS
+      radiologist,
+      payload: searchStructure
     }
-
   }
 }
 export const updateInfoSuccessfull = flag => {
@@ -211,13 +227,16 @@ export const loadLoggedinUser = token => async (dispatch) => {
 
 export const getAllDoctors = () => async (dispatch) => {
   try {
+    dispatch(loading(true));
     const doctors = await axiosClient.getAllDoctors('/api/profile/allDoctors');
     const payload = doctors.data;
     console.log(payload)
     dispatch(storeAllDoctors(payload));
+    dispatch(loading(false));
   } catch(err) {
     console.log('err', err);
     dispatch(loginUsersErr(err.response.data.errors));
+    dispatch(loading(false));
   }
 };
 

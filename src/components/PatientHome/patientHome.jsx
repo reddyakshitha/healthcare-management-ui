@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useLayoutEffect, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -19,8 +19,13 @@ const PatientHome = props => {
     profile,
     signOut,
     loading,
-    getAllDoctors
+    getAllDoctors,
+    allDoctors
   } = props;
+
+  useEffect(() => {
+      getAllDoctors()
+  }, []);
 
   useLayoutEffect(() => {
     const token = localStorage.getItem('token');
@@ -71,6 +76,11 @@ const PatientHome = props => {
           </Link>
     );
   }
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    );
+  }
   return (
     <>
       <Header
@@ -78,8 +88,19 @@ const PatientHome = props => {
         signOut={signOut}
       />
       <Search
+        cardiologist={props.cardiologist}
+        dentist={props.dentist}
+        dermatologist={props.dermatologist}
+        generalSurgeon={props.generalSurgeon}
+        neurologist={props.neurologist}
+        oncologist={props.oncologist}
+        ophthalmologist={props.ophthalmologist}
+        pediatrician={props.pediatrician}
+        primaryCarePhysician={props.primaryCarePhysician}
+        radiologist={props.radiologist}
         getAllDoctors={getAllDoctors}
         loading={loading}
+        allDoctors={allDoctors}
       />
       <div className='patient-section'>
         {welcomeText()}

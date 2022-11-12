@@ -20,7 +20,8 @@ const mapStateToProps = state => {
     registrationDoctorSuccess: state.user.registrationDoctorSuccess,
     registrationDoctorError: state.user.registrationDoctorError,
     profileUpdateSuccess: state.user.profileUpdateSuccess,
-    loading: state.user.loading
+    loading: state.user.loading,
+    allDoctors: state.user.allDoctors
   };
 };
 

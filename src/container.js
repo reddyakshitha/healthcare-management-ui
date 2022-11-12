@@ -6,6 +6,7 @@ import App from './App';
 
 const mapStateToProps = state => {
   return {
+    loading: state.user.loading
   };
 };
 

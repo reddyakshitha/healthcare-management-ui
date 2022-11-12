@@ -9,5 +9,16 @@ export const initialState = {
   registrationDoctorError: false,
   loading: false,
   profileUpdateSuccess: false,
-  adminRegisteredUserTokens: ''
+  adminRegisteredUserTokens: '',
+  cardiologist: [],
+  dentist: [],
+  dermatologist: [],
+  generalSurgeon: [],
+  neurologist: [],
+  oncologist: [],
+  ophthalmologist: [],
+  pediatrician: [],
+  primaryCarePhysician: [],
+  radiologist: [],
+  allDoctors: []
 };

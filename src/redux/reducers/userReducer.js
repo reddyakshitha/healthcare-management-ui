@@ -11,11 +11,27 @@ import {
   LOADING,
   UPDATE_INFO_SUCCESS,
   ADMIN_STORE_TOKEN_OF_USERS,
-  DOCTOR_REGISTER_ERROR
+  DOCTOR_REGISTER_ERROR,
+  STORE_ALL_DOCTORS
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case STORE_ALL_DOCTORS:
+      return {
+        ...state,
+        cardiologist: action.cardiologist,
+        dentist: action.dentist,
+        dermatologist: action.dermatologist,
+        generalSurgeon: action.generalSurgeon,
+        neurologist: action.neurologist,
+        oncologist: action.oncologist,
+        ophthalmologist: action.ophthalmologist,
+        pediatrician: action.pediatrician,
+        primaryCarePhysician: action.primaryCarePhysician,
+        radiologist: action.radiologist,
+        allDoctors: action.payload
+      }
     case ADMIN_STORE_TOKEN_OF_USERS:
       return {
         ...state,
@@ -50,9 +66,7 @@ const userReducer = (state = initialState, action) => {
         registrationDoctorError: action.payload
       }
     case SIGNOUT_USER:
-      return {
-        initialState
-      };
+      return initialState;
     case REGISTER_USER_ERROR:
       return {
         ...state,
@@ -84,7 +98,7 @@ const userReducer = (state = initialState, action) => {
         errors: action.payload
       }
     default:
-      return state;
+      return initialState;
   }
 };
 

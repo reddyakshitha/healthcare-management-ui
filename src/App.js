@@ -11,18 +11,20 @@ import PatientHome from './components/PatientHome/container';
 import PatientProfile from './components/PatientProfile/container';
 import AdminHome from './components/AdminHome/container';
 import AddUser from './components/AddUser/container';
+import DoctorLookup from './components/DoctorLookup/container';
+import SpecialityLookup from './components/SpecialityLookup/container';
 
 import './App.css';
 
 const App = props => {
-  // localStorage.removeItem('token');
-  console.log(process.env.NODE_ENV);
   return (
     <Router>
       <Routes>
         <Route path='/' exact element={<MainPage/>} />
         <Route path='/login' exact element={<LoginPage/>} />
         <Route path='/covid-information' exact element={<CovidPage/>} />
+        <Route path='/doctor' exact element={<DoctorLookup/>} />
+        <Route path='/speciality' exact element={<SpecialityLookup/>} />
         <Route path='/patient-home' exact element={<PatientHome/>} />
         <Route path='/admin-home' exact element={<AdminHome/>} />
         <Route path='/patient-home/profile' exact element={<PatientProfile/>} />

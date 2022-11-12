@@ -20,8 +20,13 @@ const PatientProfile = props => {
     profileUpdateSuccess,
     updateInfoSuccessfull,
     loading,
-    getAllDoctors
+    getAllDoctors,
+    allDoctors
   } = props;
+
+  useEffect(() => {
+    getAllDoctors()
+}, []);
   useEffect(() => {
     const token = localStorage.getItem('token');
     loadLoggedinUser(token);
@@ -189,6 +194,11 @@ const PatientProfile = props => {
         </div>
     );
   }
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    );
+  }
   
   return (
     <>
@@ -197,8 +207,19 @@ const PatientProfile = props => {
         signOut={signOut}
         />
       <Search
+        cardiologist={props.cardiologist}
+        dentist={props.dentist}
+        dermatologist={props.dermatologist}
+        generalSurgeon={props.generalSurgeon}
+        neurologist={props.neurologist}
+        oncologist={props.oncologist}
+        ophthalmologist={props.ophthalmologist}
+        pediatrician={props.pediatrician}
+        primaryCarePhysician={props.primaryCarePhysician}
+        radiologist={props.radiologist}
         getAllDoctors={getAllDoctors}
         loading={loading}
+        allDoctors={allDoctors}
       />
       {loading && <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>}
       {!loading && <div className='patient-profile-section'>

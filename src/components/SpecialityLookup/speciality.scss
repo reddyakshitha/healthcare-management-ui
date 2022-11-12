@@ -1,0 +1,60 @@
+.speciality-Header {
+  margin-top: 5%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+
+.speciality-list {
+  display: flex;
+  margin: 50px;
+}
+
+.doctor-card-container {
+  display: flex;
+  font-weight: 400;
+  min-width: 25vw;
+  max-width: 30vw;
+  min-height: 25vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px grey;
+  padding: 10px;
+}
+.doctor-name-container {
+  padding: 10px;
+}
+
+.doctor-view-details {
+  height: 25px;
+  border-radius: 50px;
+  background: #07234B;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+}
+.doctor-view-details-disabled {
+  height: 25px;
+  background-color: #bdbdbd;
+  color: #000;
+  border-radius: 50px;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+  cursor: not-allowed;
+}
+.doctor-view-details-disabled:hover {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.doctor-image-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.single-doctor-search {
+  justify-content: center;
+}

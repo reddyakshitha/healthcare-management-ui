@@ -1,5 +1,5 @@
 import React, {useLayoutEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Header from '../Header/header';
@@ -20,7 +20,9 @@ const AdminHome = props => {
     profile,
     signOut,
     loading,
-    getAllDoctors
+    getAllDoctors,
+    allDoctors,
+    user
   } = props;
 
   useLayoutEffect(() => {
@@ -71,15 +73,19 @@ const AdminHome = props => {
           </Link>
     );
   }
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    );
+  }
+  if (!_.get(profile, 'user.isAdmin', false) || !user.token) {
+    return <Navigate to="/"/>
+  }
   return (
     <>
       <Header
         profilePage
         signOut={signOut}
-      />
-      <Search
-        getAllDoctors={getAllDoctors}
-        loading={loading}
       />
       <div className='patient-section'>
         {welcomeText()}

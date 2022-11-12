@@ -241,8 +241,8 @@ const SigninBox = props => {
 
   return (
     <>
-      {isLoggedIn && isPatient && <Navigate replace to="/patient-home"/>}
-      {isLoggedIn && isAdmin && <Navigate replace to="/admin-home"/>}
+      {isLoggedIn && isPatient && <Navigate to="/patient-home"/>}
+      {isLoggedIn && isAdmin && <Navigate to="/admin-home"/>}
       {registrationSuccess && signUp ? signup(true) :
       !registrationSuccess && signUp ? signup(false) :
       signin()}

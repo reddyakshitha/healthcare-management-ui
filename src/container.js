@@ -1,17 +1,20 @@
 import {connect} from 'react-redux';
 import {
-  getAllDoctors
+  getAllDoctors,
+  loadLoggedinUser
 } from './redux/actions/userActions';
 import App from './App';
 
 const mapStateToProps = state => {
   return {
-    loading: state.user.loading
+    loading: state.user.loading,
+    isLoggedIn: state.user.isLoggedIn
   };
 };
 
 const mapDispatchToProps = {
-  getAllDoctors
+  getAllDoctors,
+  loadLoggedinUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

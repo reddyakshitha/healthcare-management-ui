@@ -1,7 +1,8 @@
 import {connect} from 'react-redux';
-import DoctorLookup from './doctorLookup';
+import Appointments from './appointments';
 import {
-  getAllDoctors
+  getAllDoctors,
+  getDoctorAppointments
 } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => {
@@ -11,12 +12,14 @@ const mapStateToProps = state => {
     isLoggedIn: state.user.isLoggedIn,
     profile: state.user.profile,
     loading: state.user.loading,
-    allDoctors: state.user.allDoctors
+    allDoctors: state.user.allDoctors,
+    doctorApptProfile: state.user.doctorApptProfile
   };
 };
 
 const mapDispatchToProps = {
-  getAllDoctors
+  getAllDoctors,
+  getDoctorAppointments
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DoctorLookup);
+export default connect(mapStateToProps, mapDispatchToProps)(Appointments);

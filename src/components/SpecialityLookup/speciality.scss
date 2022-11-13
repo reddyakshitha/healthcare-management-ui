@@ -24,9 +24,10 @@
   padding: 10px;
 }
 
-.doctor-view-details {
-  height: 25px;
-  border-radius: 50px;
+.doctor-view-details,
+.proceed-to-checkout {
+  height: 50px;
+  border-radius: 5px;
   background: #07234B;
   color: #fff;
   font-weight: bold;
@@ -34,19 +35,28 @@
   text-align: center;
   cursor: pointer;
 }
-.doctor-view-details-disabled {
-  height: 25px;
+.doctor-view-details-disabled,
+.proceed-to-checkout-disabled {
+  height: 50px;
   background-color: #bdbdbd;
   color: #000;
-  border-radius: 50px;
+  border-radius: 5px;
   font-weight: bold;
   border: none;
   text-align: center;
   cursor: not-allowed;
 }
-.doctor-view-details-disabled:hover {
+.doctor-view-details-disabled:hover,
+.proceed-to-checkout-:disabled:hover {
   box-shadow: none;
   cursor: not-allowed;
+}
+
+.proceed-to-checkout, .proceed-to-checkout-disabled {
+  height: 50px;
+  font-size: 20px;
+  padding: 10px;
+  margin-left: 5%;
 }
 
 .doctor-image-container {
@@ -57,4 +67,62 @@
 
 .single-doctor-search {
   justify-content: center;
+}
+
+.appointment-calander-container {
+  display: flex;
+  flex-direction: column;
+  margin: 5%;
+  align-content: center;
+}
+
+.appointment-date-picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  max-width: 70vw;
+}
+
+.appointment-hour-container,
+.appointment-hour-container-disabled,
+.appointment-hour-container-selected {
+  height: 50px;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  margin: 5px;
+  width: 120px;
+  background: #fff;
+  color: #07234B;
+  border: 1px solid #07234B;
+}
+
+.appointment-hour-container-selected {
+  background: #07234B;
+  color: #fff;
+}
+.appointment-hour-container-disabled {
+  cursor: not-allowed;
+  background-color: #bdbdbd;
+  color: #000;
+  border: none;
+}
+
+.appointment-hour-container-disabled:hover {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.appointment-time-picker {
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+  flex-wrap: wrap;
+}
+
+.react-calendar {
+  height: fit-content;
 }

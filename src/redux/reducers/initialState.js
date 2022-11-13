@@ -20,5 +20,7 @@ export const initialState = {
   pediatrician: [],
   primaryCarePhysician: [],
   radiologist: [],
-  allDoctors: []
+  allDoctors: [],
+  doctorApptProfile: {
+  }
 };

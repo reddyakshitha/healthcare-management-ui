@@ -27,10 +27,10 @@ const PatientHome = props => {
       getAllDoctors()
   }, []);
 
-  useLayoutEffect(() => {
-    const token = localStorage.getItem('token');
-    loadLoggedinUser(token);
-  }, [!isLoggedIn]);
+  // useLayoutEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   loadLoggedinUser(token);
+  // }, [!isLoggedIn]);
 
   const welcomeText = () => {
     const firstName = _.get(profile, 'user.firstName', '');

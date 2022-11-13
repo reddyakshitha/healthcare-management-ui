@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import _ from 'lodash';
+import {Navigate} from 'react-router-dom'; 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation } from "react-router-dom";
 import Header from '../Header/header';
@@ -10,7 +11,8 @@ const SpecialityLookup = props => {
   const {
     allDoctors,
     loading,
-    isLoggedIn
+    isLoggedIn,
+    getAllDoctors
   } = props;
 
   const location = useLocation();
@@ -25,12 +27,20 @@ const SpecialityLookup = props => {
     speciality,
     education
   } = state;
-  console.log('props state', state);
+  useEffect(() => {
+      getAllDoctors()
+  }, []);
+
+  const [appointmentPage, setAppointmenmtPage] = useState(false);
 
   if (loading) {
     return (
       <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
     );
+  }
+
+  const handleAppointment = () => {
+    setAppointmenmtPage(true);
   }
   const specialityList = (specialityArr || []).map((item, i) => {
     let edu = item.education.join(', ');
@@ -65,7 +75,6 @@ const SpecialityLookup = props => {
     )
   });
   const doctorList = () => {
-    console.log('does it come here')
     return (
       <div className='doctor-card-container'>
         <div className='doctor-image-container'>  
@@ -73,6 +82,7 @@ const SpecialityLookup = props => {
               sx={{ fontSize: 100, color: "#07234B", padding: "0 10px" }} //0078bf
             />
           <button
+            onClick={handleAppointment}
             disabled={isLoggedIn ? false : true}
             className={isLoggedIn ? 'doctor-view-details' : 'doctor-view-details-disabled'}>
               {isLoggedIn ? 'Book a consultation' : 'Login to book'}
@@ -98,6 +108,7 @@ const SpecialityLookup = props => {
   };
   return (
     <div className="healthcare-app">
+      {appointmentPage && <Navigate to="/book-appointment" state={state}/>}
       <Header
         isLoggedIn={props.isLoggedIn}
         profile={props.profile}

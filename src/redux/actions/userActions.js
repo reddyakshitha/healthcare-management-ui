@@ -14,6 +14,7 @@ export const UPDATE_INFO_SUCCESS = 'UPDATE_INFO_SUCCESS';
 export const ADMIN_STORE_TOKEN_OF_USERS = 'ADMIN_STORE_TOKEN_OF_USERS';
 export const DOCTOR_REGISTER_ERROR = 'DOCTOR_REGISTER_ERROR';
 export const STORE_ALL_DOCTORS = 'STORE_ALL_DOCTORS';
+export const STORE_DOCTOR_PROFILE_APPOINTMENTS = 'STORE_DOCTOR_PROFILE_APPOINTMENTS';
 
 
 export const storeAllDoctors = payload => {
@@ -141,6 +142,12 @@ export const loadProfile = profile => {
     payload: profile
   }
 }
+export const loadDoctorProfile = profile => {
+  return {
+    type: STORE_DOCTOR_PROFILE_APPOINTMENTS,
+    payload: profile
+  }
+}
 
 export const loginUsersErr = errors => {
   return {
@@ -225,12 +232,26 @@ export const loadLoggedinUser = token => async (dispatch) => {
 };
 
 
+export const getDoctorAppointments = email => async (dispatch) => {
+  const body = {
+    email
+  }
+  try {
+    const profile = await axiosClient.getDoctorAppointments('/api/profile/doctorAppointment', body);
+    const payload = profile.data;
+    dispatch(loadDoctorProfile(payload));
+  } catch(err) {
+    console.log('err', err);
+    dispatch(loginUsersErr(err.response.data.errors));
+  }
+};
+
+
 export const getAllDoctors = () => async (dispatch) => {
   try {
     dispatch(loading(true));
     const doctors = await axiosClient.getAllDoctors('/api/profile/allDoctors');
     const payload = doctors.data;
-    console.log(payload)
     dispatch(storeAllDoctors(payload));
     dispatch(loading(false));
   } catch(err) {

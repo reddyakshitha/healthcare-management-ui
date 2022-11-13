@@ -48,7 +48,16 @@ class AxiosClient {
       }
     }
     return axios.post(getUrl(url), body, config);
+  }
 
+
+  getDoctorAppointments(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
   }
 
   getAllDoctors(url) {

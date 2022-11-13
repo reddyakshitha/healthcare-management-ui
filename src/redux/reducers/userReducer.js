@@ -12,7 +12,8 @@ import {
   UPDATE_INFO_SUCCESS,
   ADMIN_STORE_TOKEN_OF_USERS,
   DOCTOR_REGISTER_ERROR,
-  STORE_ALL_DOCTORS
+  STORE_ALL_DOCTORS,
+  STORE_DOCTOR_PROFILE_APPOINTMENTS
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
@@ -90,6 +91,11 @@ const userReducer = (state = initialState, action) => {
         isLoggedIn: true,
         profile: action.payload,
         errors: []
+      }
+    case STORE_DOCTOR_PROFILE_APPOINTMENTS:
+      return {
+        ...state,
+        doctorApptProfile: action.payload
       }
     case LOGIN_ERROR:
       return {

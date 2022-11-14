@@ -111,7 +111,8 @@
   border: none;
 }
 
-.appointment-hour-container-disabled:hover {
+.appointment-hour-container-disabled:hover,
+.proceed-to-checkout-disabled:hover {
   box-shadow: none;
   cursor: not-allowed;
 }
@@ -125,4 +126,9 @@
 
 .react-calendar {
   height: fit-content;
+}
+
+.book-appt-login-text {
+  text-align: center;
+  color: #07234B;
 }

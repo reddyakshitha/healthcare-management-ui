@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import Select from 'react-select'
@@ -49,12 +50,16 @@ const Search = props => {
   }
 
   const handleOnchange = (e) => {
-    console.log('search onchange called', e);
     if (e.section === 'speciality') {
       const specialityPayload = {
         section: e.value,
         specialityArr: props[e.value],
-        loc: 'speciality'
+        loc: 'speciality',
+        email: _.get(props[e.value], '0.user.email', ''),
+        firstName: _.get(props[e.value], '0.user.firstName', ''),
+        lastName: _.get(props[e.value], '0.user.lastName', ''),
+        speciality: _.get(props[e.value], '0.speciality', ''),
+        education: _.get(props[e.value], '0.education', '')
       };
       setPayload(specialityPayload);
       setLoc('speciality');

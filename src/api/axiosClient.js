@@ -59,6 +59,16 @@ class AxiosClient {
     }
     return axios.post(getUrl(url), body, config);
   }
+  
+  postPayment(url, body) {
+    console.log('body', body);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
 
   getAllDoctors(url) {
     const config = {

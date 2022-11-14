@@ -13,11 +13,17 @@ import {
   ADMIN_STORE_TOKEN_OF_USERS,
   DOCTOR_REGISTER_ERROR,
   STORE_ALL_DOCTORS,
-  STORE_DOCTOR_PROFILE_APPOINTMENTS
+  STORE_DOCTOR_PROFILE_APPOINTMENTS,
+  PAYMENT_SUCCESSFULL
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PAYMENT_SUCCESSFULL:
+      return {
+        ...state,
+        paymentSuccess: action.payload
+      }
     case STORE_ALL_DOCTORS:
       return {
         ...state,

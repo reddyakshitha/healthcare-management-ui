@@ -13,6 +13,7 @@ import AdminHome from './components/AdminHome/container';
 import AddUser from './components/AddUser/container';
 import Appointments from './components/Appointments/container';
 import SpecialityLookup from './components/SpecialityLookup/container';
+import StripeContainer from './components/Stripe/stripeContainer';
 
 import './App.css';
 
@@ -40,6 +41,7 @@ const App = props => {
         <Route path='/admin-home' exact element={<AdminHome/>} />
         <Route path='/patient-home/profile' exact element={<PatientProfile/>} />
         <Route path='/admin-home/addUser' exact element={<AddUser/>} />
+        <Route path='/payment' exact element={<StripeContainer/>} />
       </Routes>
     </Router>
   );

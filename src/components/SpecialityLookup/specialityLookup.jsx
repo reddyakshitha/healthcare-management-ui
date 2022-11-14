@@ -52,6 +52,7 @@ const SpecialityLookup = props => {
             />
           <button
             disabled={isLoggedIn ? false : true}
+            onClick={handleAppointment}
             className={isLoggedIn ? 'doctor-view-details' : 'doctor-view-details-disabled'}>
               {isLoggedIn ? 'Book a consultation' : 'Login to book'}
           </button>

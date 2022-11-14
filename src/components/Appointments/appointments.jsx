@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Navigate} from 'react-router-dom';
 import _ from 'lodash';
 import moment from 'moment';
 import Calendar from 'react-calendar';
@@ -12,7 +13,8 @@ const Appointments = props => {
   const {
     getAllDoctors,
     getDoctorAppointments,
-    doctorApptProfile
+    doctorApptProfile,
+    isLoggedIn
   } = props;
 
   useEffect(() => {
@@ -24,15 +26,23 @@ const Appointments = props => {
 
   const location = useLocation();
   const {state} = location;
-  const [value, onChange] = useState(new Date());
+
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const datVal = moment(tomorrow).format();
+  const [value, onChange] = useState(new Date(datVal));
   const [selectedId, setSelectedId] = useState('');
+  const [selectedItem, setSelectedItem] = useState({});
+  const [proceedPayment, setProceedPayment] = useState(false);
 
   const handleTimeslot = item => {
     setSelectedId(item.id);
+    setSelectedItem(item);
   };
 
   const handleProceedToCheckout = () => {
-    console.log('proceed to checkout clicked');
+    setProceedPayment(true);
   }
 
   const renderTime = () => {
@@ -41,7 +51,7 @@ const Appointments = props => {
 
     const appointmentArr = _.get(doctorApptProfile, 'upcomingAppointments', []);
 
-    const selectedDateFormat = moment(value).utc().format('YYYY-DD-MM');
+    const selectedDateFormat = moment(value).format('YYYY-DD-MM');
     
     const appointmentArrFilter = appointmentArr.filter(item => item.date === selectedDateFormat);
 
@@ -70,33 +80,44 @@ const Appointments = props => {
     });
     return availableTimes;
   }
+  const navPayload = {
+    state,
+    timeslot: selectedItem,
+    date: value
 
+  }
   return (
     <div className="healthcare-app">
+      {proceedPayment && <Navigate to='/payment' state={navPayload}/>}
       <Header
         isLoggedIn={props.isLoggedIn}
         profile={props.profile}
       />
-      <div className='appointment-calander-container'>
+      {isLoggedIn ? (
+      <>
+        <div className='appointment-calander-container'>
         <h1>Book an Appointment</h1>
         <div className='appointment-date-picker'>
           <Calendar
             onChange={onChange}
             value={value}
-            minDate={new Date()}
-            defaultValue={new Date()}
+            minDate={new Date(datVal)}
+            defaultValue={new Date(datVal)}
             />
           <div className='appointment-time-picker'>
             {renderTime()}
           </div>
         </div>
       </div>
-      <button
-        className='proceed-to-checkout'
-        onClick={handleProceedToCheckout}
-      >
-        Proceed to checkout
-      </button>
+        <button
+          disabled={selectedId === ''}
+          className={selectedId === '' ? 'proceed-to-checkout-disabled' : 'proceed-to-checkout'}
+          onClick={handleProceedToCheckout}
+        >
+          Proceed to book consultation
+          </button>
+      </>
+    ) : <h1 className='book-appt-login-text'>Log in to book an appointment!</h1>}  
     </div>
   );
 }

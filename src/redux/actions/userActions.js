@@ -15,8 +15,14 @@ export const ADMIN_STORE_TOKEN_OF_USERS = 'ADMIN_STORE_TOKEN_OF_USERS';
 export const DOCTOR_REGISTER_ERROR = 'DOCTOR_REGISTER_ERROR';
 export const STORE_ALL_DOCTORS = 'STORE_ALL_DOCTORS';
 export const STORE_DOCTOR_PROFILE_APPOINTMENTS = 'STORE_DOCTOR_PROFILE_APPOINTMENTS';
+export const PAYMENT_SUCCESSFULL = 'PAYMENT_SUCCESSFULL';
 
-
+export const paymentSuccessFull = flag => {
+  return {
+    type: PAYMENT_SUCCESSFULL,
+    payload: flag
+  }
+}
 export const storeAllDoctors = payload => {
   if (payload.length > 0) {
     let cardiologist = [];
@@ -271,5 +277,24 @@ export const updateInfo = (body, token) => async (dispatch) => {
     console.log('err', err);
     dispatch(loading(false));
     // dispatch(infoUpdateError(err.response.data.errors));
+  }
+}
+
+
+export const postPayment = (body) => async (dispatch) => {
+  const payload = {
+    id: body
+  }
+  dispatch(loading(true));
+  try {
+    const res = await axiosClient.postPayment('/api/profile/payment', JSON.stringify(payload));
+    if (res.status === 200) {
+      dispatch(loading(false));
+      dispatch(paymentSuccessFull(true));
+    }
+  } catch (err) {
+    console.log('err', err);
+    dispatch(loading(false));
+    dispatch(paymentSuccessFull(false));
   }
 }

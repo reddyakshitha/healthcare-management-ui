@@ -22,5 +22,6 @@ export const initialState = {
   radiologist: [],
   allDoctors: [],
   doctorApptProfile: {
-  }
+  },
+  paymentSuccess: false
 };

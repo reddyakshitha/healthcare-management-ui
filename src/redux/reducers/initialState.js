@@ -23,5 +23,7 @@ export const initialState = {
   allDoctors: [],
   doctorApptProfile: {
   },
-  paymentSuccess: false
+  paymentSuccess: false,
+  emailSuccess: false,
+  uniqueApptArr: []
 };

@@ -1,4 +1,5 @@
 import axiosClient from "../../api/axiosClient";
+import { TimeConfig } from "../../components/PatientHome/timeConfig";
 import _ from 'lodash';
 
 export const REGISTER_USER_ERROR = 'REGISTER_USER_ERROR';
@@ -15,14 +16,31 @@ export const ADMIN_STORE_TOKEN_OF_USERS = 'ADMIN_STORE_TOKEN_OF_USERS';
 export const DOCTOR_REGISTER_ERROR = 'DOCTOR_REGISTER_ERROR';
 export const STORE_ALL_DOCTORS = 'STORE_ALL_DOCTORS';
 export const STORE_DOCTOR_PROFILE_APPOINTMENTS = 'STORE_DOCTOR_PROFILE_APPOINTMENTS';
+export const EMAIL_SENT_SUCCESSFULL = 'EMAIL_SENT_SUCCESSFULL';
 export const PAYMENT_SUCCESSFULL = 'PAYMENT_SUCCESSFULL';
+export const UNIQUE_APPT_ARRAY = 'UNIQUE_APPT_ARRAY';
 
+export const setUniqueApptArr = arr => {
+  console.log('is this called', []);
+  return {
+    type: UNIQUE_APPT_ARRAY,
+    payload: arr
+  }
+}
 export const paymentSuccessFull = flag => {
   return {
     type: PAYMENT_SUCCESSFULL,
     payload: flag
   }
 }
+
+export const emailSent = flag => {
+  return {
+    type: EMAIL_SENT_SUCCESSFULL,
+    payload: flag
+  }
+}
+
 export const storeAllDoctors = payload => {
   if (payload.length > 0) {
     let cardiologist = [];
@@ -143,9 +161,22 @@ export const adminStoreToken = token => {
 }
 
 export const loadProfile = profile => {
+  const upcomingAppointments = _.get(profile, 'upcomingAppointments', []);
+  let uniqueArr = [];
+  if (upcomingAppointments.length > 0) {
+    const kvArray = upcomingAppointments.map(entry => {
+      const key = ['apptDate', 'startTime', 'doctorEmail'].map(k => entry[k]).join('|');
+      return [key, entry];
+     });
+     const map = new Map(kvArray);
+     uniqueArr = Array.from(map.values());
+
+     uniqueArr.sort((a,b) => -(`${a.apptDate}T${TimeConfig[a.startTime]}`).localeCompare(`${b.apptDate}T${TimeConfig[b.startTime]}`));
+    }
   return {
     type: STORE_PROFILE,
-    payload: profile
+    payload: profile,
+    uniqueArr
   }
 }
 export const loadDoctorProfile = profile => {
@@ -188,22 +219,6 @@ export const registerUsers = body => async (dispatch) => {
     dispatch(registerUsersErr(err.response.data.errors));
   }
 };
-
-// export const registerDoctors = body => async (dispatch) => {
-//   try {
-//     const res = await axiosClient.registerPatients('/api/users', JSON.stringify(body));
-//     const token = res.data.token;
-//     // dispatch(storeToken(res.data.token));
-//     const updateProfile = await axiosClient.updateProfile('/api/profile', res.data.token);
-//     const payload = updateProfile.data;
-//     if (payload) {
-//       return dispatch(doctorRegistrationSuccess('cred'));
-//     }
-//   } catch(err) {
-//     dispatch(registerUsersErr(err.response.data.errors));
-//   }
-// };
-
 
 export const loginUsers = body => async (dispatch) => {
   dispatch(loading(true));
@@ -281,7 +296,20 @@ export const updateInfo = (body, token) => async (dispatch) => {
 }
 
 
-export const postPayment = (body) => async (dispatch) => {
+export const updateUpcomingAppointment = (appointmentPayload) => async (dispatch) => {
+  try {
+    const res = await axiosClient.postUpcomingAppointment('/api/profile/upcomingAppointment', JSON.stringify(appointmentPayload));
+    if (res.status === 200) {
+      console.log('res', res);
+    }
+  } catch (err) {
+    console.log('err', err);
+    dispatch(loading(false));
+    dispatch(paymentSuccessFull(false));
+  }
+}
+
+export const postPayment = (body, appointmentPayload) => async (dispatch) => {
   const payload = {
     id: body
   }
@@ -289,6 +317,7 @@ export const postPayment = (body) => async (dispatch) => {
   try {
     const res = await axiosClient.postPayment('/api/profile/payment', JSON.stringify(payload));
     if (res.status === 200) {
+      await dispatch(updateUpcomingAppointment(appointmentPayload));
       dispatch(loading(false));
       dispatch(paymentSuccessFull(true));
     }
@@ -296,5 +325,21 @@ export const postPayment = (body) => async (dispatch) => {
     console.log('err', err);
     dispatch(loading(false));
     dispatch(paymentSuccessFull(false));
+  }
+}
+
+export const SendEmailApi = (body) => async (dispatch) => {
+
+  dispatch(loading(true));
+  try {
+    const res = await axiosClient.postEmail('/api/profile/sendemail', JSON.stringify(body));
+    if (res.status === 200) {
+      dispatch(loading(false));
+      dispatch(emailSent(true));
+    }
+  } catch (err) {
+    console.log('err', err);
+    dispatch(loading(false));
+    dispatch(emailSent(false));
   }
 }

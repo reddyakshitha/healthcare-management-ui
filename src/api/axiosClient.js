@@ -61,7 +61,23 @@ class AxiosClient {
   }
   
   postPayment(url, body) {
-    console.log('body', body);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }  
+  postUpcomingAppointment(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
+
+  postEmail(url, body) {
     const config = {
       headers: {
         'Content-Type': 'application/json'

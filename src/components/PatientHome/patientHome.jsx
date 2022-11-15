@@ -1,5 +1,6 @@
 import React, {useLayoutEffect, useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import moment from 'moment';
+import {Link, Navigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Header from '../Header/header';
@@ -7,6 +8,7 @@ import Search from '../Search/search';
 import { patientConfig } from '../../config/patientConfig';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PersonIcon from '@mui/icons-material/Person';
+import {TimeConfig} from './timeConfig';
 
 
 import './patientHome.scss';
@@ -20,17 +22,15 @@ const PatientHome = props => {
     signOut,
     loading,
     getAllDoctors,
-    allDoctors
+    allDoctors,
+    setUniqueApptArr
   } = props;
 
   useEffect(() => {
       getAllDoctors()
   }, []);
 
-  // useLayoutEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   loadLoggedinUser(token);
-  // }, [!isLoggedIn]);
+  const [upcomingApptNav, setUpcomingAppt] = useState(false);
 
   const welcomeText = () => {
     const firstName = _.get(profile, 'user.firstName', '');
@@ -44,8 +44,26 @@ const PatientHome = props => {
     );
   }
   const upcomingAppointmentsSnapshot = () => {
+    const currentDate = moment(new Date()).format('YYYY-DD-MM');
+    const upcomingAppointments = _.get(profile, 'upcomingAppointments', []);
+    let uniqueArr = [];
+    if (upcomingAppointments.length > 0) {
+      const kvArray = upcomingAppointments.map(entry => {
+        const key = ['apptDate', 'startTime', 'doctorEmail'].map(k => entry[k]).join('|');
+        return [key, entry];
+       });
+       const map = new Map(kvArray);
+       uniqueArr = Array.from(map.values());
+
+       uniqueArr.sort((a,b) => -(`${a.apptDate}T${TimeConfig[a.startTime]}`).localeCompare(`${b.apptDate}T${TimeConfig[b.startTime]}`));
+       setUniqueApptArr(uniqueArr);
+    }
+    
     return (
-        <div className='patient-section-container'>
+        <div
+          className='patient-section-container'
+          onClick={() => setUpcomingAppt(true)}
+          >
           <div className='patient-upcoming-appointments'>
             <CalendarMonthIcon
               sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
@@ -54,7 +72,11 @@ const PatientHome = props => {
               Upcoming appointments
             </h4>
             <div className='patient-upcoming-appointments-list'>
-              You have an upcoming appointment with Dr. ABC at 9.00 AM on 11/01/22.
+              {uniqueArr.length > 0 &&
+              uniqueArr[0].apptDate >= currentDate ?
+              `You're latest appointment is with Dr. 
+              ${uniqueArr[0].doctorFirstName} ${uniqueArr[0].doctorLastName} on ${uniqueArr[0].apptDate} at ${uniqueArr[0].startTime}` :
+              'You not have any upcoming appointments'}
             </div>
           </div>
         </div>
@@ -83,6 +105,7 @@ const PatientHome = props => {
   }
   return (
     <>
+      {upcomingApptNav && <Navigate to='/upcoming-appointment' state={{profile}}/>}
       <Header
         profilePage
         signOut={signOut}

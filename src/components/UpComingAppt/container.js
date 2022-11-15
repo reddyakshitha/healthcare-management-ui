@@ -2,10 +2,9 @@ import {connect} from 'react-redux';
 import {
   loadLoggedinUser,
   signOut,
-  getAllDoctors,
-  setUniqueApptArr
+  getAllDoctors
 } from '../../redux/actions/userActions';
-import PatientHome from './patientHome';
+import UpComingAppt from './upComingAppt';
 
 const mapStateToProps = state => {
   return {
@@ -23,15 +22,15 @@ const mapStateToProps = state => {
     ophthalmologist: state.user.ophthalmologist,
     pediatrician: state.user.pediatrician,
     primaryCarePhysician: state.user.primaryCarePhysician,
-    radiologist: state.user.radiologist
+    radiologist: state.user.radiologist,
+    user: state.user
   };
 };
 
 const mapDispatchToProps = {
   loadLoggedinUser,
   signOut,
-  getAllDoctors,
-  setUniqueApptArr
+  getAllDoctors
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PatientHome);
+export default connect(mapStateToProps, mapDispatchToProps)(UpComingAppt);

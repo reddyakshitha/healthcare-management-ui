@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import _ from 'lodash';
+import { ToastContainer, toast } from 'react-toastify';
 import {CardElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import moment from 'moment';
 import Header from '../Header/header';
@@ -13,7 +15,12 @@ const PaymentForm = props => {
     data,
     getAllDoctors,
     user,
-    paymentSuccessFull
+    paymentSuccessFull,
+    SendEmailApi,
+    loading,
+    emailSuccess,
+    emailSent,
+    loadLoggedinUser
   } = props;
 
   const [personalData, setPersonalData] = useState({
@@ -28,24 +35,28 @@ const PaymentForm = props => {
   } = personalData;
 
 
+  useEffect(() => {
+    getAllDoctors();
+    const token = localStorage.getItem('token');
+    if (token) {
+      loadLoggedinUser(token);
+    }
+}, []);
+
   const appointmentPayload = {}
-    appointmentPayload.doctorEmail = data.state.email;
-    appointmentPayload.doctorFirstName = data.state.firstName;
-    appointmentPayload.doctorLastName = data.state.lastName;
-    appointmentPayload.userEmail = user.email;
-    appointmentPayload.userFirstName = user.firstName;
-    appointmentPayload.userLastName = user.lastName;
-    appointmentPayload.apptDate = moment(data.date).utc().format('YYYY-DD-MM');
-    appointmentPayload.startTime = data.timeslot.startTime;
-    appointmentPayload.endTime = data.timeslot.endTime;
+    appointmentPayload.doctorEmail = _.get(data, 'state.email', '');
+    appointmentPayload.doctorFirstName = _.get(data, 'state.firstName', '');
+    appointmentPayload.doctorLastName = _.get(data, 'state.lastName', '');
+    appointmentPayload.userEmail = _.get(user, 'email', '');
+    appointmentPayload.userFirstName = _.get(user, 'firstName', '');
+    appointmentPayload.userLastName = _.get(user, 'lastName', '');
+    appointmentPayload.apptDate = moment(_.get(data, 'date', new Date().toISOString().substring(0, 10))).format('YYYY-DD-MM');
+    appointmentPayload.startTime = _.get(data, 'timeslot.startTime', '');
+    appointmentPayload.endTime = _.get(data, 'timeslot.endTime', '');
 
   const stripe = useStripe();
   const elements = useElements();
   const emailSecurityToken = '43323419-a782-470c-8e0e-332653f3dd24';
-
-  useEffect(() => {
-    getAllDoctors()
-}, []);
 
   const onChange = (e) => {
     setPersonalData({...personalData, [e.target.name]: e.target.value});
@@ -70,27 +81,15 @@ const PaymentForm = props => {
       }
     }
   };
-  const SendEmail = () => {
+  const SendEmail = async () => {
     paymentSuccessFull(false);
-      window.Email.send({
-          Host : "smtp.elasticemail.com",
-          Username : "seproject2022@yopmail.com",
-          Password : "0C79F3EA8986AFDD592FD7686B777128C3F7",
-          Port: "2525",
-          To : appointmentPayload.userEmail,
-          From : "seproject2022@yopmail.com",
-          Subject : "Appointment Confirmation",
-          Body : `You're confirmed for an appointment with
-          Dr.${appointmentPayload.doctorFirstName} ${appointmentPayload.doctorLastName} on
-          ${appointmentPayload.apptDate} between ${appointmentPayload.startTime} - ${appointmentPayload.endTime}`
-      }).then(
-        message => {
-          console.log('state check here', data);
-          console.log('user check here', user, moment(data.date).utc().format('YYYY-DD-MM'));
-          // confirmAppointment(appointmentPayload);
-          console.log(message)
-        }
-      );
+    const data = {
+      email: appointmentPayload.userEmail,
+      subject: 'Appointment Confirmation',
+      message: `You are confirmed for an appointment with Dr. 
+      ${appointmentPayload.doctorFirstName} ${appointmentPayload.doctorLastName} at ${appointmentPayload.startTime} on ${appointmentPayload.apptDate}`
+    };
+    SendEmailApi(data);
   } 
 
   const handleSubmit = async (e) => {
@@ -102,13 +101,37 @@ const PaymentForm = props => {
 
     if (!error) {
       const {id} = paymentMethod;
-      postPayment(id);
+      postPayment(id, appointmentPayload);
     } else {
       console.log('err stripe', error);
     }
   } 
+  const emailToast = () => {
+    return (
+      toast(`You are confirmed for an appointment with Dr. 
+      ${appointmentPayload.doctorFirstName} ${appointmentPayload.doctorLastName} at ${appointmentPayload.startTime} on ${appointmentPayload.apptDate}.
+      You will now be redirected to the home page.`, {
+        toastId: 'emailSuccess',
+        onClose: () => {
+          emailSent(false);
+          setTimeout(function() {
+            window.location.replace('/');
+        }, 5000);
+        },
+        autoClose: 5000
+      })
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
+    )
+  }
   return (
     <>
+      <ToastContainer limit={1} autoClose={5000}/>
+      {emailSuccess && emailToast()}
       <Header
         isLoggedIn={isLoggedIn}
         profile={profile}
@@ -155,9 +178,9 @@ const PaymentForm = props => {
           </div>
         </fieldset>
         <button
-          disabled={fname === '' || lname === ''}
+          disabled={emailSuccess || fname === '' || lname === ''}
           // onClick={handlePayment}
-          className={fname === '' || lname === '' ? 'stripe-payment-button-disabled' : 'stripe-payment-button'}
+          className={emailSuccess || fname === '' || lname === '' ? 'stripe-payment-button-disabled' : 'stripe-payment-button'}
           >
             Pay
           </button>

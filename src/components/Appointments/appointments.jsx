@@ -53,17 +53,21 @@ const Appointments = props => {
 
     const selectedDateFormat = moment(value).format('YYYY-DD-MM');
     
-    const appointmentArrFilter = appointmentArr.filter(item => item.date === selectedDateFormat);
+    const appointmentArrFilter = appointmentArr.filter(item => item.apptDate === selectedDateFormat);
 
     if (appointmentArrFilter.length > 0) {
       checkUnavailableAppt = appointmentConfig.map(item => {
         let newItem = item;
-        if (item.startTime === appointmentArrFilter[0].startTime && item.endTime === appointmentArrFilter[0].endTime) {
+        appointmentArrFilter.map(filArr => {
+          if (item.startTime === filArr.startTime && item.endTime === filArr.endTime) {
           newItem.isUnavailable = true
         };
+        })
         return newItem;
       });
+
     }
+
     const availableTimes = (checkUnavailableAppt.length > 0 ? checkUnavailableAppt : appointmentConfig).map((item, i)  => {
       return (
         <button
@@ -84,8 +88,8 @@ const Appointments = props => {
     state,
     timeslot: selectedItem,
     date: value
-
   }
+  console.log('date check', value);
   return (
     <div className="healthcare-app">
       {proceedPayment && <Navigate to='/payment' state={navPayload}/>}

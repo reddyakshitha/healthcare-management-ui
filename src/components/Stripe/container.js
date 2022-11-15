@@ -3,7 +3,10 @@ import PaymentForm from './paymentForm';
 import {
   postPayment,
   getAllDoctors,
-  paymentSuccessFull
+  paymentSuccessFull,
+  SendEmailApi,
+  emailSent,
+  loadLoggedinUser
 } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => {
@@ -16,14 +19,18 @@ const mapStateToProps = state => {
     allDoctors: state.user.allDoctors,
     doctorApptProfile: state.user.doctorApptProfile,
     paymentSuccess: state.user.paymentSuccess,
-    user: state.user.profile.user
+    user: state.user.profile.user,
+    emailSuccess: state.user.emailSuccess
   };
 };
 
 const mapDispatchToProps = {
   postPayment,
   getAllDoctors,
-  paymentSuccessFull
+  paymentSuccessFull,
+  SendEmailApi,
+  emailSent,
+  loadLoggedinUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);

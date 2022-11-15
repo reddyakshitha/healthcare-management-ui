@@ -14,11 +14,23 @@ import {
   DOCTOR_REGISTER_ERROR,
   STORE_ALL_DOCTORS,
   STORE_DOCTOR_PROFILE_APPOINTMENTS,
-  PAYMENT_SUCCESSFULL
+  PAYMENT_SUCCESSFULL,
+  EMAIL_SENT_SUCCESSFULL,
+  UNIQUE_APPT_ARRAY
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case UNIQUE_APPT_ARRAY: 
+    return {
+      ...state,
+      uniqueApptArr: action.payload
+    }
+    case EMAIL_SENT_SUCCESSFULL:
+      return {
+        ...state,
+        emailSuccess: action.payload
+      }
     case PAYMENT_SUCCESSFULL:
       return {
         ...state,
@@ -96,7 +108,8 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         profile: action.payload,
-        errors: []
+        errors: [],
+        uniqueApptArr: action.uniqueArr
       }
     case STORE_DOCTOR_PROFILE_APPOINTMENTS:
       return {

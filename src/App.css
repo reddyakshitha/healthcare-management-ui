@@ -36,5 +36,33 @@
     transform: rotate(360deg);
   }
 }
+body{
+  height: 100%;
+}
+
+.healthcare-app-footer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: rgb(211, 211, 211);
+  min-height: 25vh;
+  align-items: center;
+  justify-content: center;
+}
+.healthcare-app-footer-padding {
+  padding: 50px;
+}
+.healthcare-logo-footer, .healthcare-logo-footer-disclaimer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #07234B;
+  font-weight: bold;
+}
+.healthcare-logo-footer-disclaimer {
+  font-size: 12px;
+  font-weight: 400;
+  padding-top: 20px;
+}
 
 

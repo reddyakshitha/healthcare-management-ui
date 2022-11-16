@@ -143,7 +143,7 @@ const PatientProfile = props => {
                 if (profileUpdateSuccess) {
                 setPersonalData({...personalData, updatePersInfo: false});
                 }
-              }, autoClose: 5000
+              }, autoClose: 3000
             })}
       </>
     )
@@ -183,7 +183,7 @@ const PatientProfile = props => {
                     if (profileUpdateSuccess) {
                     setPersonalData({...personalData, updateMedHis: false});
                     }
-                  }, autoClose: 5000
+                  }, autoClose: 3000
                 })}
           </div>
         </div>

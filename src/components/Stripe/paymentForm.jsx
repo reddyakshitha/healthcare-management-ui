@@ -118,7 +118,7 @@ const PaymentForm = props => {
             window.location.replace('/');
         }, 5000);
         },
-        autoClose: 5000
+        autoClose: 3000
       })
     )
   }

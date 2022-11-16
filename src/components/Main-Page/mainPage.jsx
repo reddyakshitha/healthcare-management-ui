@@ -4,6 +4,7 @@ import Header from '../Header/header';
 import Search from '../Search/search';
 import CovidBar from '../Covid/covidBar';
 import HomePageBody from '../Home-Body/homeMidSec';
+import Footer from './footer';
 
 const MainPage = props => {
   const {
@@ -41,6 +42,7 @@ const MainPage = props => {
         allDoctors={props.allDoctors}
       />}
       <HomePageBody/>
+      <Footer />
     </div>
   );
 }

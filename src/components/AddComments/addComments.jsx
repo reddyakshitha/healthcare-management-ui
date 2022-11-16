@@ -106,7 +106,7 @@ const AddComments = props => {
     return (
         <div className='patient-profile-section-container'>
           <h1 className='patient-personal-information'>
-            Add Comments and Prescriptions
+            {isDoctor ? 'Add Comments and Prescriptions' : 'Comments and Prescriptions'}
           </h1>
           {AddComments()}
           {commentSuccess && 
@@ -118,7 +118,7 @@ const AddComments = props => {
                       window.location.replace('/upcoming-appointment');
                   }, 5000);
                   },
-                  autoClose: 5000
+                  autoClose: 3000
                 })}
         </div>
     );

@@ -95,14 +95,14 @@ const RemoveUser = props => {
                   toastId: 'userDeleteSuccess',
                   onClose: () => {
                     setUserDeleted(false);
-                  }, autoClose: 5000
+                  }, autoClose: 3000
                 })}
           {noUserExist &&
           toast(`No Such User Exist`, {
             toastId: 'userDeleteSuccess',
             onClose: () => {
               noUserToDelete(false);
-            }, autoClose: 5000
+            }, autoClose: 3000
           })}
         </div>
     );

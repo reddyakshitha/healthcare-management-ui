@@ -16,6 +16,7 @@ import AdminHome from './components/AdminHome/container';
 import RemoveUser from './components/RemoveUser/container';
 import AddUser from './components/AddUser/container';
 import ViewEditUsers from './components/ViewEditUsers/container';
+import ViewDoctorAppt from './components/ViewDoctorAppt/container';
 import Appointments from './components/Appointments/container';
 import SpecialityLookup from './components/SpecialityLookup/container';
 import StripeContainer from './components/Stripe/stripeContainer';
@@ -49,6 +50,7 @@ const App = props => {
         <Route path='/patient-home/profile' exact element={<PatientProfile/>} />
         <Route path='/doctor-home/profile' exact element={<DoctorProfile/>} />
         <Route path='/admin-home/view-edit-users' exact element={<ViewEditUsers/>} />
+        <Route path='/admin-home/view-doctor-appointmmets' exact element={<ViewDoctorAppt/>} />
         <Route path='/admin-home/revoke-access' exact element={<RemoveUser/>} />
         <Route path='/admin-home/addUser' exact element={<AddUser/>} />
         <Route path='/payment' exact element={<StripeContainer/>} />

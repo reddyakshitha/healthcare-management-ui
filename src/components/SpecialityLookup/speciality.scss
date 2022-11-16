@@ -7,18 +7,19 @@
 .speciality-list {
   display: flex;
   margin: 50px;
+  flex-wrap: wrap;
 }
 
 .doctor-card-container {
   display: flex;
   font-weight: 400;
-  min-width: 25vw;
-  max-width: 30vw;
+  min-width: 20vw;
+  max-width: 25vw;
   min-height: 25vh;
-  display: flex;
   flex-direction: column;
   box-shadow: 0 0 10px grey;
   padding: 10px;
+  margin: 2%;
 }
 .doctor-name-container {
   padding: 10px;

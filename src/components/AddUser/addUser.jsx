@@ -198,7 +198,7 @@ const AddUser = props => {
                   toastId: 'docProfSuccess',
                   onClose: () => {
                     updateInfoSuccessfull(false);
-                  }, autoClose: 5000
+                  }, autoClose: 3000
                 })}
         </div>
     );
@@ -227,7 +227,7 @@ const AddUser = props => {
                   toastId: 'docRegSuccess',
                   onClose: () => {
                     doctorSuccess(false);
-                  }, autoClose: 5000
+                  }, autoClose: 3000
                 })}
           {registrationDoctorError && 
           <div className="healthcare-signup-errors">

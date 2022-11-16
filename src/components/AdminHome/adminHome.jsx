@@ -91,6 +91,22 @@ const AdminHome = props => {
           </Link>
     );
   }
+  const viewDoctorAppt = () => {
+    return (
+          <Link className='patient-section-container' to='/admin-home/view-doctor-appointmmets'>
+            <div className='patient-section-container'>
+              <div className='patient-upcoming-appointments'>
+                <ContactPageIcon
+                  sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
+                />
+                <h4 className='patient-section-container-text'>
+                  View Doctor Appointments
+                </h4>
+              </div>
+            </div>
+          </Link>
+    );
+  }
   if (loading) {
     return (
       <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
@@ -111,6 +127,7 @@ const AdminHome = props => {
         {upcomingAppointmentsSnapshot()}
         {profileSnapshot()}
         {viewEditUsers()}
+        {viewDoctorAppt()}
         </div>
       </div>
     </>

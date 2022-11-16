@@ -50,8 +50,24 @@ class AxiosClient {
     return axios.post(getUrl(url), body, config);
   }
 
+  updateInfoWithoutToken(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
 
   getDoctorAppointments(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
+  removeUser(url, body) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -76,8 +92,26 @@ class AxiosClient {
     }
     return axios.post(getUrl(url), body, config);
   }
+  postCommentsAndPrescriptions(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
 
   postEmail(url, body) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return axios.post(getUrl(url), body, config);
+  }
+
+
+  getUserData(url, body) {
     const config = {
       headers: {
         'Content-Type': 'application/json'

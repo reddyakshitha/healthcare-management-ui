@@ -11,9 +11,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import {TimeConfig} from './timeConfig';
 
 
-import './patientHome.scss';
+import './doctorHome.scss';
 
-const PatientHome = props => {
+const DoctorHome = props => {
   const {
     errors,
     isLoggedIn,
@@ -38,7 +38,7 @@ const PatientHome = props => {
     return (
         <div className='patient-section-container'>
           <h1 className='patient-section-container-text'>
-            {`Welcome ${firstName}, ${lastName}`}.
+            {`Welcome Dr. ${firstName}, ${lastName}`}.
           </h1>
         </div>
     );
@@ -58,7 +58,6 @@ const PatientHome = props => {
        uniqueArr.sort((a,b) => -(`${a.apptDate}T${TimeConfig[a.startTime]}`).localeCompare(`${b.apptDate}T${TimeConfig[b.startTime]}`));
        setUniqueApptArr(uniqueArr);
     }
-    
     return (
         <div
           className='patient-section-container'
@@ -74,8 +73,8 @@ const PatientHome = props => {
             <div className='patient-upcoming-appointments-list'>
               {uniqueArr.length > 0 &&
               uniqueArr[0].apptDate >= currentDate ?
-              `You're latest appointment is with Dr. 
-              ${uniqueArr[0].doctorFirstName} ${uniqueArr[0].doctorLastName} on ${uniqueArr[0].apptDate} at ${uniqueArr[0].startTime}` :
+              `You're latest appointment is with 
+              ${uniqueArr[0].userFirstName} ${uniqueArr[0].userLastName} on ${uniqueArr[0].apptDate} at ${uniqueArr[0].startTime}` :
               'You not have any upcoming appointments'}
             </div>
           </div>
@@ -84,7 +83,7 @@ const PatientHome = props => {
   }
   const profileSnapshot = () => {
     return (
-          <Link className='patient-section-container' to='/patient-home/profile'>
+          <Link className='patient-section-container' to='/doctor-home/profile'>
             <div className='patient-section-container'>
               <div className='patient-upcoming-appointments'>
                 <PersonIcon
@@ -111,21 +110,6 @@ const PatientHome = props => {
         isLoggedIn={props.isLoggedIn}
         signOut={signOut}
       />
-      <Search
-        cardiologist={props.cardiologist}
-        dentist={props.dentist}
-        dermatologist={props.dermatologist}
-        generalSurgeon={props.generalSurgeon}
-        neurologist={props.neurologist}
-        oncologist={props.oncologist}
-        ophthalmologist={props.ophthalmologist}
-        pediatrician={props.pediatrician}
-        primaryCarePhysician={props.primaryCarePhysician}
-        radiologist={props.radiologist}
-        getAllDoctors={getAllDoctors}
-        loading={loading}
-        allDoctors={allDoctors}
-      />
       <div className='patient-section'>
         {welcomeText()}
         <div className='patient-section-tabs'>
@@ -137,4 +121,4 @@ const PatientHome = props => {
   )
 }
 
-export default PatientHome;
+export default DoctorHome;

@@ -19,9 +19,36 @@ export const STORE_DOCTOR_PROFILE_APPOINTMENTS = 'STORE_DOCTOR_PROFILE_APPOINTME
 export const EMAIL_SENT_SUCCESSFULL = 'EMAIL_SENT_SUCCESSFULL';
 export const PAYMENT_SUCCESSFULL = 'PAYMENT_SUCCESSFULL';
 export const UNIQUE_APPT_ARRAY = 'UNIQUE_APPT_ARRAY';
+export const USER_DELETED = 'USER_DELETED';
+export const ADMIN_VIEW_EDIT_DATA = 'ADMIN_VIEW_EDIT_DATA';
+export const NO_USER_TO_DELETE = 'NO_USER_TO_DELETE';
+export const COMMENTS_AND_PRESCRIPTION_UPDATED = 'COMMENTS_AND_PRESCRIPTION_UPDATED';
 
+export const commentsUpdated = flag => {
+  return {
+    type: COMMENTS_AND_PRESCRIPTION_UPDATED,
+    payload: flag
+  }
+};
+export const adminViewEditUserData = data => {
+  return {
+    type: ADMIN_VIEW_EDIT_DATA,
+    payload: data
+  }
+}
+export const noUserToDelete = flag => {
+  return {
+    type: NO_USER_TO_DELETE,
+    payload: flag
+  }
+}
+export const setUserDeleted = flag => {
+  return {
+    type: USER_DELETED,
+    payload: flag
+  }
+}
 export const setUniqueApptArr = arr => {
-  console.log('is this called', []);
   return {
     type: UNIQUE_APPT_ARRAY,
     payload: arr
@@ -42,7 +69,6 @@ export const emailSent = flag => {
 }
 
 export const storeAllDoctors = payload => {
-  if (payload.length > 0) {
     let cardiologist = [];
     let dentist = [];
     let dermatologist = [];
@@ -56,6 +82,7 @@ export const storeAllDoctors = payload => {
 
     let searchStructure = [];
 
+    if (payload.length > 0) {
     cardiologist = payload.filter(item => item.speciality === 'cardiologist');
     dentist = payload.filter(item => item.speciality === 'dentist');
     dermatologist = payload.filter(item => item.speciality === 'dermatologist');
@@ -81,6 +108,7 @@ export const storeAllDoctors = payload => {
         education: item.education
       }
     });
+  }
     return {
       type: STORE_ALL_DOCTORS,
       cardiologist,
@@ -95,7 +123,6 @@ export const storeAllDoctors = payload => {
       radiologist,
       payload: searchStructure
     }
-  }
 }
 export const updateInfoSuccessfull = flag => {
   return {
@@ -238,6 +265,24 @@ export const loginUsers = body => async (dispatch) => {
   }
 };
 
+export const getUserData = email => async (dispatch) => {
+  const body = {
+    email
+  };
+  dispatch(loading(true))
+  try {
+    const profile = await axiosClient.getUserData('/api/profile/userData', body);
+    console.log('get user data', profile);
+    const payload = profile.data;
+    dispatch(adminViewEditUserData(payload));
+    dispatch(loading(false));
+  } catch(err) {
+    console.log('userdata err', err);
+    dispatch(loading(false));
+    // dispatch(adminViewEditUserDataErr(true));
+  }
+};
+
 
 export const loadLoggedinUser = token => async (dispatch) => {
   try {
@@ -248,6 +293,7 @@ export const loadLoggedinUser = token => async (dispatch) => {
     dispatch(loadProfile(payload));
   } catch(err) {
     console.log('err', err);
+    localStorage.removeItem('token', token);
     dispatch(loginUsersErr(err.response.data.errors));
   }
 };
@@ -266,13 +312,32 @@ export const getDoctorAppointments = email => async (dispatch) => {
     dispatch(loginUsersErr(err.response.data.errors));
   }
 };
+export const revokeUserCredentials = email => async (dispatch) => {
+  const body = {
+    email
+  };
+  dispatch(loading(true));
+  try {
+    const res = await axiosClient.removeUser('/api/profile/removeUser', body);
+    console.log('res', res);
+    if (res.status === 200) {
+      dispatch(setUserDeleted(true));
+      dispatch(loading(false));
+
+    }
+  } catch(err) {
+    dispatch(loading(false));
+    console.log('err', err);
+    dispatch(noUserToDelete(true));
+  }
+};
 
 
 export const getAllDoctors = () => async (dispatch) => {
   try {
     dispatch(loading(true));
     const doctors = await axiosClient.getAllDoctors('/api/profile/allDoctors');
-    const payload = doctors.data;
+    const payload = _.get(doctors, 'data', []);
     dispatch(storeAllDoctors(payload));
     dispatch(loading(false));
   } catch(err) {
@@ -283,6 +348,8 @@ export const getAllDoctors = () => async (dispatch) => {
 };
 
 export const updateInfo = (body, token) => async (dispatch) => {
+  console.log('JSON.stringify(body)', JSON.stringify(body));
+  console.log('token', token);
   dispatch(loading(true));
   try {
     const res = await axiosClient.updateProfile('/api/profile', token, JSON.stringify(body));
@@ -295,6 +362,19 @@ export const updateInfo = (body, token) => async (dispatch) => {
   }
 }
 
+export const updateInfoWithoutToken = (body) => async (dispatch) => {
+  dispatch(loading(true));
+  try {
+    const res = await axiosClient.updateInfoWithoutToken('/api/profile/updateWithoutToken', JSON.stringify(body));
+    console.log('res', res);
+  dispatch(loading(false));
+  dispatch(updateInfoSuccessfull(true));
+  } catch (err) {
+    console.log('err', err);
+    dispatch(loading(false));
+    // dispatch(infoUpdateError(err.response.data.errors));
+  }
+}
 
 export const updateUpcomingAppointment = (appointmentPayload) => async (dispatch) => {
   try {
@@ -306,6 +386,22 @@ export const updateUpcomingAppointment = (appointmentPayload) => async (dispatch
     console.log('err', err);
     dispatch(loading(false));
     dispatch(paymentSuccessFull(false));
+  }
+}
+
+export const updateComments = (appointmentPayload) => async (dispatch) => {
+  dispatch(loading(false));
+  try {
+    const res = await axiosClient.postCommentsAndPrescriptions('/api/profile/commentsAndPrescriptions', JSON.stringify(appointmentPayload));
+    if (res.status === 200) {
+      console.log('res', res);
+      dispatch(loading(false));
+      dispatch(commentsUpdated(true));
+    }
+  } catch (err) {
+    console.log('err', err);
+    dispatch(loading(false));
+    dispatch(commentsUpdated(false));
   }
 }
 

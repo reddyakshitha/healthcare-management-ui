@@ -32,8 +32,15 @@ const UpComingAppt = props => {
       }
   }, [!isLoggedIn]);
 
+  const [apptItem, setItem] = useState({});
+  const [appt, setAppt] = useState(false);
+
   const location = useLocation();
   const {state} = location;
+
+
+  const isDoctor = _.get(profile, 'user.isDoctor', false);
+  const apptWithCommentsArr = _.get(profile, 'appointmnetsWithComments', []);
 
   const currentDateTime = moment.utc(new Date()).local().format("L LT");
   const currentDate = currentDateTime.substring(0, 10).replace(/(..).(..).(....)/, "$3-$2-$1");
@@ -55,9 +62,14 @@ const UpComingAppt = props => {
       }
     }
   });
-  pastApptArr.sort((a, b) => a.apptDate > b.apptDate ?
-  1 : a.apptDate === b.apptDate ? HourConfig[a.startTime] - HourConfig[b.startTime] : -1);
+  const mapCommentsArr = pastApptArr.map(obj =>
+    apptWithCommentsArr.find(o => (o.doctorEmail === obj.doctorEmail && o.apptDate === obj.apptDate && o.startTime === obj.startTime)) ||
+    obj);
   
+
+  mapCommentsArr.sort((a, b) => a.apptDate > b.apptDate ?
+  1 : a.apptDate === b.apptDate ? HourConfig[a.startTime] - HourConfig[b.startTime] : -1);
+
   const futureApptArr = appointmentArr.filter(item => {
     if (currentDate < item.apptDate) {
       return item;
@@ -70,13 +82,21 @@ const UpComingAppt = props => {
   futureApptArr.sort((a, b) => a.apptDate > b.apptDate ?
   1 : a.apptDate === b.apptDate ? HourConfig[a.startTime] - HourConfig[b.startTime] : -1);
 
+  const handleApptOnClick = (item) => {
+    // if (isDoctor) {
+      setItem(item);
+      setAppt(true);
+    // }
+  }
 
   const upcoming = () => {
     const futureAppts = futureApptArr.map((item, i) => {
       return (
-        <div className='patient-appt-container' key={i}>
-          <div className='patient-appt-label'>
-            Appointment with Dr. {item.doctorFirstName} {item.doctorLastName} at {item.startTime} on {item.apptDate}
+        <div className={isDoctor ? 'doctor-appt-container' : 'patient-appt-container'} key={i}>
+          <div className={isDoctor ? 'doctor-appt-label' : 'patient-appt-label'}>
+            Appointment with{` `}   
+            {isDoctor ? item.userFirstName : item.doctorFirstName} {isDoctor ? item.userLastName : item.doctorLastName} at{` `}  
+            {item.startTime} on {item.apptDate}
           </div>
         </div>
       );
@@ -93,11 +113,16 @@ const UpComingAppt = props => {
     );
   }
   const past = () => {
-    const pastAppts = pastApptArr.map((item, i) => {
+    const pastAppts = mapCommentsArr.map((item, i) => {
       return (
-        <div className='patient-appt-container' key={i}>
-          <div className='patient-appt-label'>
-            Appointment with Dr. {item.doctorFirstName} {item.doctorLastName} at {item.startTime} on {item.apptDate}
+        <div className={isDoctor ? 'doctor-appt-container' : 'patient-appt-container'}
+          key={i}
+          onClick={() => handleApptOnClick(item)}
+        >
+          <div className={isDoctor ? 'doctor-appt-label' : 'patient-appt-label'}>
+            Appointment with{` `}   
+            {isDoctor ? item.userFirstName : item.doctorFirstName} {isDoctor ? item.userLastName : item.doctorLastName} at{` `}   
+            {item.startTime} on {item.apptDate}
           </div>
         </div>
       );
@@ -120,11 +145,13 @@ const UpComingAppt = props => {
   }
   return (
     <>
+      {appt && <Navigate to='/add-comments' state={apptItem}/>}
       <Header
-        profilePage
+        isLoggedIn={props.isLoggedIn}
         signOut={signOut}
+        profile={props.profile}
       />
-      <Search
+      {!isDoctor && <Search
         cardiologist={props.cardiologist}
         dentist={props.dentist}
         dermatologist={props.dermatologist}
@@ -138,7 +165,7 @@ const UpComingAppt = props => {
         getAllDoctors={getAllDoctors}
         loading={loading}
         allDoctors={allDoctors}
-      />
+      />}
       <div className='patient-section'>
         {upcoming()}
         {past()}

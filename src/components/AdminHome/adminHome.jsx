@@ -8,6 +8,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 
 import './adminHome.scss';
@@ -59,7 +60,7 @@ const AdminHome = props => {
   }
   const profileSnapshot = () => {
     return (
-          <Link className='patient-section-container' to='/admin-home/profile'>
+          <Link className='patient-section-container' to='/admin-home/revoke-access'>
             <div className='patient-section-container'>
               <div className='patient-upcoming-appointments'>
                 <PersonRemoveIcon
@@ -67,6 +68,23 @@ const AdminHome = props => {
                 />
                 <h4 className='patient-section-container-text'>
                   Revoke Access
+                </h4>
+              </div>
+            </div>
+          </Link>
+    );
+  }
+
+  const viewEditUsers = () => {
+    return (
+          <Link className='patient-section-container' to='/admin-home/view-edit-users'>
+            <div className='patient-section-container'>
+              <div className='patient-upcoming-appointments'>
+                <ContactPageIcon
+                  sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
+                />
+                <h4 className='patient-section-container-text'>
+                  View/Edit Users
                 </h4>
               </div>
             </div>
@@ -92,6 +110,7 @@ const AdminHome = props => {
         <div className='patient-section-tabs'>
         {upcomingAppointmentsSnapshot()}
         {profileSnapshot()}
+        {viewEditUsers()}
         </div>
       </div>
     </>

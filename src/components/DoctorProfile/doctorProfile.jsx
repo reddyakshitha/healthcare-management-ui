@@ -8,10 +8,10 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import Header from '../Header/header';
 import Search from '../Search/search';
-import './addUser.scss';
+import './doctorProfile.scss';
 import { Password } from '@mui/icons-material';
 
-const AddUser = props => {
+const DoctorProfile = props => {
   const {
     errors,
     profile,
@@ -31,6 +31,10 @@ const AddUser = props => {
     getAllDoctors,
     allDoctors
   } = props;
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    loadLoggedinUser(token);
+  }, [!isLoggedIn]);
 
   const [personalData, setPersonalData] = useState({
     firstName: '',
@@ -41,7 +45,9 @@ const AddUser = props => {
     password: '',
     credentials: false,
     speciality: '',
-    education: ''
+    education: '',
+    updatePersInfo: false,
+    updateMedHis: false
   });
   const {
     password,
@@ -52,30 +58,35 @@ const AddUser = props => {
     gender,
     credentials,
     speciality,
-    education
+    education,
+    updatePersInfo,
+    updateMedHis
   } = personalData;
 
   const onChange = e => {
+    if (profileUpdateSuccess) {
+      updateInfoSuccessfull(false);
+    }
     setPersonalData({...personalData, [e.target.name]: e.target.value});
   }
   const update = section => {
     let payload = {};
     const token = localStorage.getItem('token');
+    console.log('token', token);
     if (section === 'info') {
-      payload.dob = dob,
-      payload.speciality = speciality,
-      payload.gender = gender,
-      payload.education = education
-      updateInfo(payload, adminRegisteredUserTokens);
-      setPersonalData({...personalData, credentials: false});
+      payload.dob = dob !== '' ? dob : moment(_.get(profile, 'dob', new Date())).utc().format('YYYY-DD-MM'),
+      payload.speciality = speciality !== '' ? speciality : _.get(profile, 'speciality', ''),
+      payload.gender = gender !== '' ? gender : _.get(profile, 'gender', ''),
+      payload.education = education !== '' ? education : _.get(profile, 'education', [])
+      updateInfo(payload, token);
+      setPersonalData({...personalData, updateMedHis: true});
     } else if (section === 'cred') {
-      payload.firstName = firstName,
-      payload.lastName = lastName,
-      payload.email = email,
-      payload.password = password,
+      payload.firstName = firstName !== '' ? firstName : _.get(profile, 'user.firstName', ''),
+      payload.lastName = lastName !== '' ? lastName : _.get(profile, 'user.lastName', ''),
+      payload.email = _.get(profile, 'user.email', ''),
       payload.isDoctor = true
-      adminregisterUsers(payload);
-      setPersonalData({...personalData, credentials: true});
+      updateInfo(payload, token);
+      setPersonalData({...personalData, updatePersInfo: true});
     }
   }
   const patientDetails = () => {
@@ -83,7 +94,7 @@ const AddUser = props => {
       <>
         <div className='patient-id-container'>
           <label htmlFor="speciality"> Speciality</label>
-          <select name="speciality" value={speciality} onChange={(e) => onChange(e)}>
+          <select name="speciality" value={speciality !== '' ? speciality : _.get(profile, 'speciality', '')} onChange={(e) => onChange(e)}>
             <option value="" disabled selected>Select</option>
             <option value="cardiologist">Cardiologist</option>
             <option value="dentist">Dentist</option>
@@ -102,7 +113,7 @@ const AddUser = props => {
           <input
             type="string"
             name="education"
-            value={education}
+            value={education !== '' ? education : _.get(profile, 'education', [])}
             onChange={(e) => onChange(e)}
           />
         </div>
@@ -111,24 +122,23 @@ const AddUser = props => {
           <input
             type="date"
             name="dob"
-            value={dob}
+            value={dob !== '' ? dob : moment(profile.dob).utc().format('YYYY-DD-MM')}
             onChange={(e) => onChange(e)}
           />
         </div>
         <div className='patient-id-container'>
         <label htmlFor="gender"> Gender</label>
-          <select name="gender" value={gender} onChange={(e) => onChange(e)}>
+          <select name="gender" value={gender !== '' ? gender : _.get(profile, 'gender', '')} onChange={(e) => onChange(e)}>
             <option value="" disabled selected>Select</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">other</option>
           </select>
           <button
-            className={`${!credentials || _.get(props, 'errors', []).length > 0 ? 'btn-disabled' : 'update-personal-info '}`}
-            disabled={!credentials || _.get(props, 'errors', []).length > 0}
+            className='update-personal-info '
             onClick={() => update('info')}
           >
-            Add Doctor Profile
+            Update
           </button>
         </div>
       </>
@@ -144,7 +154,7 @@ const AddUser = props => {
             <input
               type="string"
               name="firstName"
-              value={firstName}
+              value={firstName !== '' ? firstName : _.get(profile, 'user.firstName', '')}
               onChange={(e) => onChange(e)}
             />
           </div>
@@ -153,7 +163,7 @@ const AddUser = props => {
             <input
               type="string"
               name="lastName"
-              value={lastName}
+              value={lastName !== '' ? lastName : _.get(profile, 'user.lastName', '')}
               onChange={(e) => onChange(e)}
             />
           </div>
@@ -161,25 +171,16 @@ const AddUser = props => {
             <label className='patient-id-label'>Email</label>
             <input
               type="string"
+              disabled
               name="email"
-              value={email}
-              onChange={(e) => onChange(e)}
-            />
-          </div>
-          <div className='patient-id-container'>
-            <label className='patient-id-label'>password</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
+              value={_.get(profile, 'user.email', '')}
               onChange={(e) => onChange(e)}
             />
             <button
-              disabled={email === '' && password === ''}
-              className={`${email === '' && password === '' ? 'btn-disabled' : 'update-personal-info '}`}
+              className='update-personal-info'
               onClick={() => update('cred')}
             >
-              Add Doctor Credentials
+              Update
             </button>
           </div>
         </div>
@@ -190,14 +191,16 @@ const AddUser = props => {
     return (
         <div className='patient-profile-section-container'>
           <h1 className='patient-personal-information'>
-            Add Doctor Profile
+            Doctor Profile
           </h1>
           {patientDetails()}
-          {profileUpdateSuccess && 
-                toast(`Profile successfully Updated`, {
-                  toastId: 'docProfSuccess',
+        {profileUpdateSuccess && updateMedHis && 
+                toast(`Doctor Profile updated sucessfully.`, {
+                  toastId: 'docmedProfileSuccess',
                   onClose: () => {
-                    updateInfoSuccessfull(false);
+                    if (profileUpdateSuccess) {
+                    setPersonalData({...personalData, updateMedHis: false});
+                    }
                   }, autoClose: 5000
                 })}
         </div>
@@ -219,20 +222,18 @@ const AddUser = props => {
     return (
         <div className='patient-profile-section-container'>
           <h1 className='patient-personal-information'>
-            Add Doctor Credentials
+            Doctor Personal Information
           </h1>
           {doctorLoginCred()}
-          {registrationDoctorSuccess && 
-                toast(`Credentials added successfully`, {
-                  toastId: 'docRegSuccess',
-                  onClose: () => {
-                    doctorSuccess(false);
-                  }, autoClose: 5000
-                })}
-          {registrationDoctorError && 
-          <div className="healthcare-signup-errors">
-            {_.get(props, 'errors', []).length > 0 && errorsMap()}
-          </div>}
+        {profileUpdateSuccess && updatePersInfo && 
+            toast(`Doctor's personal information updated sucessfully.`, {
+              toastId: 'doctorpersonalHisInfoSuccess',
+              onClose: () => {
+                if (profileUpdateSuccess) {
+                setPersonalData({...personalData, updatePersInfo: false});
+                }
+              }, autoClose: 5000
+            })}
         </div>
     );
 
@@ -259,4 +260,4 @@ const AddUser = props => {
   )
 }
 
-export default AddUser;
+export default DoctorProfile;

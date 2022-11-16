@@ -67,7 +67,7 @@ const PatientProfile = props => {
     if (section === 'info') {
       payload.firstName = (firstName !== '' ? firstName : _.get(profile, 'user.firstName', '')),
       payload.lastName = lastName !== '' ? lastName : _.get(profile, 'user.lastName', ''),
-      payload.dob = dob !== '' ? dob : moment(profile.dob).utc().format('YYYY-DD-MM'),
+      payload.dob = dob !== '' ? dob : moment(_.get(profile, 'dob', new Date())).utc().format('YYYY-DD-MM'),
       payload.gender = gender !== '' ? gender : _.get(profile, 'gender', '')
       updateInfo(payload, token);
     setPersonalData({...personalData, updatePersInfo: true});
@@ -136,11 +136,15 @@ const PatientProfile = props => {
             Update
           </button>
         </div>
-        {profileUpdateSuccess && updatePersInfo && <div className='patient-id-container'>
-            <div className="healthcare-signup-registered">
-            Patient's personal information updated sucessfully.
-          </div>
-        </div>}
+        {profileUpdateSuccess && updatePersInfo && 
+            toast(`Patient's personal information updated sucessfully.`, {
+              toastId: 'personalHisSuccess',
+              onClose: () => {
+                if (profileUpdateSuccess) {
+                setPersonalData({...personalData, updatePersInfo: false});
+                }
+              }, autoClose: 5000
+            })}
       </>
     )
   }
@@ -185,15 +189,6 @@ const PatientProfile = props => {
         </div>
     );
   }
-  const prescriptions = () => {
-    return (
-        <div className='patient-profile-section-container'>
-          <h1 className='patient-personal-information'>
-            Prescriptions
-          </h1>
-        </div>
-    );
-  }
   if (loading) {
     return (
       <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
@@ -203,8 +198,9 @@ const PatientProfile = props => {
   return (
     <>
       <Header
-        profilePage
+        isLoggedIn={props.isLoggedIn}
         signOut={signOut}
+        profile={props.profile}
         />
       <Search
         cardiologist={props.cardiologist}
@@ -225,7 +221,6 @@ const PatientProfile = props => {
       {!loading && <div className='patient-profile-section'>
         {personalInformation()}
         {medicalHistory()}
-        {prescriptions()}
         <ToastContainer limit={1} autoClose={5000}/>
       </div>}
     </>

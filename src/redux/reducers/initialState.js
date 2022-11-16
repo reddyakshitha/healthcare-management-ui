@@ -25,5 +25,9 @@ export const initialState = {
   },
   paymentSuccess: false,
   emailSuccess: false,
-  uniqueApptArr: []
+  uniqueApptArr: [],
+  userDelete: false,
+  noUserExist: false,
+  adminViewData: {},
+  commentSuccess: false
 };

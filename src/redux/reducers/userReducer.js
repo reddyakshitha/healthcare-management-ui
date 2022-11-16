@@ -16,11 +16,37 @@ import {
   STORE_DOCTOR_PROFILE_APPOINTMENTS,
   PAYMENT_SUCCESSFULL,
   EMAIL_SENT_SUCCESSFULL,
-  UNIQUE_APPT_ARRAY
+  UNIQUE_APPT_ARRAY,
+  USER_DELETED,
+  NO_USER_TO_DELETE,
+  ADMIN_VIEW_EDIT_DATA,
+  COMMENTS_AND_PRESCRIPTION_UPDATED
 } from '../actions/userActions';
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case COMMENTS_AND_PRESCRIPTION_UPDATED: {
+      return {
+        ...state,
+        commentSuccess: action.payload
+      }
+    }
+    case ADMIN_VIEW_EDIT_DATA: {
+      return {
+        ...state,
+        adminViewData: action.payload
+      }
+    }
+    case NO_USER_TO_DELETE:
+      return {
+        ...state,
+        noUserExist: action.payload
+      }
+    case USER_DELETED:
+      return {
+        ...state,
+        userDelete: action.payload
+      }
     case UNIQUE_APPT_ARRAY: 
     return {
       ...state,

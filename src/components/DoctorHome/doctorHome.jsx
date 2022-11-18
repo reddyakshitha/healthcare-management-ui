@@ -97,6 +97,22 @@ const DoctorHome = props => {
           </Link>
     );
   }
+  const patientSearch = () => {
+    return (
+      <Link className='patient-section-container' to='/doctor-home/patient-search'>
+        <div className='patient-section-container'>
+          <div className='patient-upcoming-appointments'>
+            <PersonIcon
+              sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
+            />
+            <h4 className='patient-section-container-text'>
+              Patient Search
+            </h4>
+          </div>
+        </div>
+      </Link>
+    )
+  }
   if (loading) {
     return (
       <div className="lds-ring">Loading<div></div><div></div><div></div><div></div></div>
@@ -115,6 +131,7 @@ const DoctorHome = props => {
         <div className='patient-section-tabs'>
         {upcomingAppointmentsSnapshot()}
         {profileSnapshot()}
+        {patientSearch()}
         </div>
       </div>
     </>

@@ -12,6 +12,7 @@ import PatientHome from './components/PatientHome/container';
 import DoctorHome from './components/DoctorHome/container';
 import PatientProfile from './components/PatientProfile/container';
 import DoctorProfile from './components/DoctorProfile/container';
+import PatientSearch from './components/PatientSearch/container';
 import AdminHome from './components/AdminHome/container';
 import RemoveUser from './components/RemoveUser/container';
 import AddUser from './components/AddUser/container';
@@ -49,6 +50,7 @@ const App = props => {
         <Route path='/admin-home' exact element={<AdminHome/>} />
         <Route path='/patient-home/profile' exact element={<PatientProfile/>} />
         <Route path='/doctor-home/profile' exact element={<DoctorProfile/>} />
+        <Route path='/doctor-home/patient-search' exact element={<PatientSearch/>} />
         <Route path='/admin-home/view-edit-users' exact element={<ViewEditUsers/>} />
         <Route path='/admin-home/view-doctor-appointmmets' exact element={<ViewDoctorAppt/>} />
         <Route path='/admin-home/revoke-access' exact element={<RemoveUser/>} />

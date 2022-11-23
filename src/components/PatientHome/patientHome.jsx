@@ -69,7 +69,7 @@ const PatientHome = props => {
               sx={{ fontSize: 200, color: "#07234B", padding: "0 10px" }} //0078bf
             />
             <h4 className='patient-section-container-text'>
-              Upcoming appointments
+              Appointments
             </h4>
             <div className='patient-upcoming-appointments-list'>
               {uniqueArr.length > 0 &&
